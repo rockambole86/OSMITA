@@ -28,57 +28,91 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.btnGeneratePDF = new System.Windows.Forms.Button();
+            this.btnSendEmails = new System.Windows.Forms.Button();
+            this.btnLoadFile = new System.Windows.Forms.Button();
+            this.gridDataToImport = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.gridDataToImport)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // btnImport
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Importar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnImport.Location = new System.Drawing.Point(118, 12);
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(100, 23);
+            this.btnImport.TabIndex = 1;
+            this.btnImport.Text = "Importar";
+            this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
-            // button2
+            // btnGeneratePDF
             // 
-            this.button2.Location = new System.Drawing.Point(118, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Generar PDF";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnGeneratePDF.Location = new System.Drawing.Point(224, 12);
+            this.btnGeneratePDF.Name = "btnGeneratePDF";
+            this.btnGeneratePDF.Size = new System.Drawing.Size(100, 23);
+            this.btnGeneratePDF.TabIndex = 2;
+            this.btnGeneratePDF.Text = "Generar PDF";
+            this.btnGeneratePDF.UseVisualStyleBackColor = true;
+            this.btnGeneratePDF.Click += new System.EventHandler(this.btnGeneratePDF_Click);
             // 
-            // button3
+            // btnSendEmails
             // 
-            this.button3.Location = new System.Drawing.Point(224, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Enviar mails";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnSendEmails.Location = new System.Drawing.Point(330, 12);
+            this.btnSendEmails.Name = "btnSendEmails";
+            this.btnSendEmails.Size = new System.Drawing.Size(100, 23);
+            this.btnSendEmails.TabIndex = 3;
+            this.btnSendEmails.Text = "Enviar mails";
+            this.btnSendEmails.UseVisualStyleBackColor = true;
+            this.btnSendEmails.Click += new System.EventHandler(this.btnSendEmails_Click);
+            // 
+            // btnLoadFile
+            // 
+            this.btnLoadFile.Location = new System.Drawing.Point(12, 12);
+            this.btnLoadFile.Name = "btnLoadFile";
+            this.btnLoadFile.Size = new System.Drawing.Size(100, 23);
+            this.btnLoadFile.TabIndex = 0;
+            this.btnLoadFile.Text = "Cargar archivo";
+            this.btnLoadFile.UseVisualStyleBackColor = true;
+            this.btnLoadFile.Click += new System.EventHandler(this.btnLoadFile_Click);
+            // 
+            // gridDataToImport
+            // 
+            this.gridDataToImport.AllowUserToAddRows = false;
+            this.gridDataToImport.AllowUserToDeleteRows = false;
+            this.gridDataToImport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridDataToImport.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.gridDataToImport.Location = new System.Drawing.Point(12, 162);
+            this.gridDataToImport.Name = "gridDataToImport";
+            this.gridDataToImport.RowHeadersVisible = false;
+            this.gridDataToImport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gridDataToImport.Size = new System.Drawing.Size(606, 276);
+            this.gridDataToImport.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 450);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(630, 450);
+            this.Controls.Add(this.gridDataToImport);
+            this.Controls.Add(this.btnLoadFile);
+            this.Controls.Add(this.btnSendEmails);
+            this.Controls.Add(this.btnGeneratePDF);
+            this.Controls.Add(this.btnImport);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.gridDataToImport)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnImport;
+        private System.Windows.Forms.Button btnGeneratePDF;
+        private System.Windows.Forms.Button btnSendEmails;
+        private System.Windows.Forms.Button btnLoadFile;
+        private System.Windows.Forms.DataGridView gridDataToImport;
     }
 }
 
