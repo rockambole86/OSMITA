@@ -1,4 +1,4 @@
-﻿namespace ControlSUR
+﻿namespace FE2PDF
 {
     public static class ConfigInfo
     {

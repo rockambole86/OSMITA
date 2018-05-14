@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ControlSUR.Properties
+namespace FE2PDF.Properties
 {
 
 

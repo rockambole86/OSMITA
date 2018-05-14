@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SQLite;
 
-namespace ControlSUR
+namespace FE2PDF
 {
     public class DB
     {
@@ -14,7 +14,7 @@ namespace ControlSUR
 
         private DB()
         {
-            _connection = new SQLiteConnection("Data Source=control_sur_db.db;Version=3;New=False;Compress=True;");
+            _connection = new SQLiteConnection("Data Source=FE2PDF.db;Version=3;New=False;Compress=True;");
         }
 
         public static DB Instance()

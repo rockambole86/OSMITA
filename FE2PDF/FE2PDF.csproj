@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D9389C0B-6872-45A5-86ED-6EE726CBDF9A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ControlSUR</RootNamespace>
-    <AssemblyName>ControlSUR</AssemblyName>
+    <RootNamespace>FE2PDF</RootNamespace>
+    <AssemblyName>FE2PDF</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -86,9 +86,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="control_sur_db.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="FE2PDF.db" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

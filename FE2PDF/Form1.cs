@@ -5,7 +5,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace ControlSUR
+namespace FE2PDF
 {
     public partial class Form1 : Form
     {

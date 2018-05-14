@@ -1,4 +1,4 @@
-﻿namespace ControlSUR
+﻿namespace FE2PDF
 {
     partial class Form1
     {
