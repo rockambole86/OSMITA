@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+    <style type="text/css" media="all">
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 9pt;
+            
+        }
+
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background-image: url(fc_bg.jpg);
+            background-size: 210mm 297mm;
+            background-repeat: no-repeat;
+            background-position: top left;
+            margin: 0;
+            padding: 0;
+            border: 1px solid transparent;
+        }
+
+        .debug td {
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 190mm;
+            margin-top: 10mm;
+            margin-left: 11mm;
+        }
+
+        table tr td {
+            border-collapse: collapse;
+            
+            vertical-align: top;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        table span {
+            display: inline-block;
+        }
+
+        .details {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <table>
+        <tr style="height: 20mm;">
+            <td colspan="2"></td>
+            <td style="width: 56mm;">
+                <span style="margin-top: 0mm;">{{NombreComprobante}}</span><br />
+                <span>{{TipoComprobante}}{{CondicionIVA}}{{CentroEmisor}}{{NumeroComprobante}}</span><br />
+                <span>{{FechaEmision}}</span>
+            </td>
+        </tr>
+        <tr style="height: 3mm;"><td colspan="3"></td></tr>
+        <tr style="height: 46mm;">
+            <td colspan="2">
+                <span style="margin-left: 18mm; margin-top: 12mm;">{{Detalle1}}{{Detalle2}}</span><br />
+
+                <span style="margin-left: 18mm; margin-top: 5mm;">{{Domicilio}}</span><br />
+                <span style="margin-left: 18mm;">{{Localidad}}{{CodigoPostal}}{{Barrio}}</span><br />
+
+                <span style="margin-left: 2mm; margin-top: 4mm;">Vencimiento {{FechaVencimiento}}</span><br />
+                <span style="margin-left: 30mm; margin-top: 2.5mm;">{{CondicionPago}}</span>
+            </td>
+            <td>
+                <span style="margin-left: 10mm; margin-top: 20mm;">{{CUILCUIT}}</span>
+            </td>
+        </tr>
+        <tr style="height: 2mm;"><td colspan="3"></td></tr>
+        <tr style="height: 109mm;">
+            <td colspan="3">
+                <table class="details">
+                    <tr>
+                        <td colspan="2" style="padding-top: 2mm;">
+                            <span>{{Detalle}}----------------------------------------------------------------------------------------------------</span>
+                        </td>
+                        <td style="padding-top: 2mm; text-align: right; width: 56mm;">
+                            <span>{{MontoFacturado}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding-top: 2mm;">
+                            <span>{{Detalle}}----------------------------------------------------------------------------------------------------</span>
+                        </td>
+                        <td style="padding-top: 2mm; text-align: right; width: 56mm;">
+                            <span>{{MontoFacturado}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding-top: 2mm;">
+                            <span>{{Detalle}}----------------------------------------------------------------------------------------------------</span>
+                        </td>
+                        <td style="padding-top: 2mm; text-align: right; width: 56mm;">
+                            <span>{{MontoFacturado}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding-top: 2mm;">
+                            <span>{{Detalle}}----------------------------------------------------------------------------------------------------</span>
+                        </td>
+                        <td style="padding-top: 2mm; text-align: right; width: 56mm;">
+                            <span>{{MontoFacturado}}</span>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+        <tr style="height: 15mm;">
+            <td colspan="3" style="padding-left: 2mm; vertical-align: middle;">
+                <span>Ref. Pago Mis Cuentas {{RefPagoMisCuentas}}</span><br />
+                <span>Ref. Red Link {{RefRedLink}}</span>
+            </td>
+        </tr>
+        <tr style="height: 2mm;"><td colspan="3"></td></tr>
+        <tr style="height: 49mm;">
+            <td colspan="2"></td>
+            <td style="text-align: right;">
+                <span style="margin-top: 7mm;">{{MontoNoGravado}}</span><br />
+                <span style="margin-top: 5mm;">{{MontoGravado}}</span><br />
+                <span style="margin-top: 5mm;">{{Subtotal}}</span><br />
+                <span style="margin-top: 13mm;">{{MontoIVA}}</span><br />
+            </td>
+        </tr>
+        <tr style="height: 2mm;"><td colspan="3"></td></tr>
+        <tr style="height: 15mm;">
+            <td colspan="2"></td>
+            <td style="text-align: right;">
+                <span style="margin-top: 8mm;">{{Importe}}</span>
+            </td>
+        </tr>
+        <tr style="height: 3mm;"><td colspan="3"></td></tr>
+        <tr style="height: 12mm;">
+            <td colspan="3" style="vertical-align: middle;">
+                <span style="margin-left: 2mm;">{{CodigoBarra}}</span>
+            </td>
+        </tr>
+    </table>
+    <!--
+    <div style="height: 3.2cm;">
+        <div style="float: right; padding-top: 1.5cm;">
+            <span>{{NombreComprobante}}</span><br/>
+            <span>{{TipoComprobante}}{{CondicionIVA}}{{CentroEmisor}}{{NumeroComprobante}}</span><br/>
+            <span>{{FechaEmision}}</span>
+        </div>
+
+    </div>
+
+    <div class="" style="padding-top: 1.3cm; padding-left: 2.8cm; float: left; width: 11cm; height: 2.7cm;">
+        <span>{{Detalle1}}{{Detalle2}}</span><br/><br/>
+
+        <span>{{Domicilio}}</span>
+        <span>{{Localidad}}{{CodigoPostal}}</span>
+        <span>{{Barrio}}</span>
+    </div>
+
+    <div class="" style="float: left; padding-top: 1.3cm; padding-left: 1.75cm; height: 2.7cm;">
+        <br/><br/>
+        <span>{{CUILCUIT}}</span>
+    </div>
+
+    <div class="" style="clear: both;">
+        <span>Vencimiento {{FechaVencimiento}}</span>
+        <span>{{CondicionPago}}</span>
+    </div>
+    <div class="">
+        <span>**CAE {{NumeroCAE}}</span>
+    </div>
+    <-- Detalle ->
+    <div class="detail-container">
+        <div class="detail-item">
+            <span>{{Detalle}}</span>
+            <span>{{MontoFacturado}}</span>
+        </div>
+    </div>
+    <-- Fin Detalle ->
+
+    <div class="">
+        <span>Ref. Pago Mis Cuentas {{RefPagoMisCuentas}}</span>
+        <span>Ref. Red Link {{RefRedLink}}</span>
+    </div>
+
+    <-- Summary ->
+    <div class="">
+        <span>{{MontoNoGravado}}</span>
+        <span>{{MontoGravado}}</span>
+        <span>{{Subtotal}}</span>
+        <span>{{MontoIVA}}</span>
+        <span>{{Importe}}</span>
+    </div>
+    <-- Fin Summary ->
+
+    <div class="">
+        <span>{{CodigoBarra}}</span>
+    </div>
+    -->
+</div>
+</body>
+</html>
