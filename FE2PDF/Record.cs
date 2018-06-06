@@ -29,12 +29,13 @@ namespace FE2PDF
         public string RefPagoMisCuentas { get; set; }
         public string RefRedLink        { get; set; }
         public string Email             { get; set; }
-        public List<Detail> Items       { get; set; } = new List<Detail>();
+
+        public List<Detail> Items { get; set; } = new List<Detail>();
     }
 
     public class Detail
     {
-        public string Detalle { get; set; }
-        public string Monto   { get; set; }
+        public string Detalle        { get; set; }
+        public string MontoFacturado { get; set; }
     }
 }

@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
 using System.Windows.Forms;
+using SelectPdf;
 
 namespace FE2PDF
 {
@@ -22,7 +22,7 @@ namespace FE2PDF
 
             ReadConfig();
 
-            txtOutputFolder.Text = ConfigInfo.SourcePath;
+            txtOutputFolder.Text = ConfigInfo.ProcessedPath;
         }
 
         private void btnSearchInputFile_Click(object sender, EventArgs e)
@@ -107,6 +107,8 @@ namespace FE2PDF
 
             try
             {
+                barProgress.Style = ProgressBarStyle.Marquee;
+
                 var    sr     = new StreamReader(_inputFile.FullName);
                 Header header = null;
 
@@ -135,7 +137,7 @@ namespace FE2PDF
                             Localidad = line.Substring(258, 20).Trim(),
                             Barrio = line.Substring(278, 30).Trim(),
                             CodigoPostal = line.Substring(308, 8).Trim(),
-                            CUILCUIT = line.Substring(316, 13).Trim(),
+                            CUILCUIT = line.Substring(316, 13).Trim().Replace("/", "-"),
                             FechaVencimiento = line.Substring(329, 10).Trim(),
                             NumeroCAE = line.Substring(339, 14).Trim(),
                             CondicionPago = line.Substring(353, 70).Trim(),
@@ -158,7 +160,7 @@ namespace FE2PDF
                         var item = new Detail
                         {
                             Detalle = line.Substring(1, 50).Trim(),
-                            Monto = line.Substring(51, 12).Trim()
+                            MontoFacturado = line.Substring(51, 12).Trim()
                         };
 
                         header.Items.Add(item);
@@ -173,6 +175,10 @@ namespace FE2PDF
 
                 return false;
             }
+            finally
+            {
+                barProgress.Style = ProgressBarStyle.Continuous;
+            }
         }
 
         private bool Import()
@@ -181,6 +187,9 @@ namespace FE2PDF
 
             try
             {
+                barProgress.Style = ProgressBarStyle.Continuous;
+                barProgress.Maximum = _data.Count;
+
                 _db.Connect();
                 _db.BeginTran();
 
@@ -207,31 +216,31 @@ namespace FE2PDF
 
                     var parameters = new Hashtable
                     {
-                        { "@ImportedFileId", importedFileId }, 
-                        { "@NombreComprobante", header.NombreComprobante }, 
-                        { "@TipoComprobante", header.TipoComprobante }, 
-                        { "@CondicionIVA", header.CondicionIVA }, 
-                        { "@CentroEmisor", header.CentroEmisor }, 
-                        { "@NumeroComprobante", header.NumeroComprobante }, 
-                        { "@FechaEmision", header.FechaEmision }, 
-                        { "@Detalle1", header.Detalle1 }, 
-                        { "@Detalle2", header.Detalle2 }, 
-                        { "@Domicilio", header.Domicilio }, 
-                        { "@Localidad", header.Localidad }, 
-                        { "@Barrio", header.Barrio }, 
-                        { "@CodigoPostal", header.CodigoPostal }, 
-                        { "@CUILCUIT", header.CUILCUIT }, 
-                        { "@FechaVencimiento", header.FechaVencimiento }, 
-                        { "@NumeroCAE", header.NumeroCAE }, 
+                        { "@ImportedFileId", importedFileId },
+                        { "@NombreComprobante", header.NombreComprobante },
+                        { "@TipoComprobante", header.TipoComprobante },
+                        { "@CondicionIVA", header.CondicionIVA },
+                        { "@CentroEmisor", header.CentroEmisor },
+                        { "@NumeroComprobante", header.NumeroComprobante },
+                        { "@FechaEmision", header.FechaEmision },
+                        { "@Detalle1", header.Detalle1 },
+                        { "@Detalle2", header.Detalle2 },
+                        { "@Domicilio", header.Domicilio },
+                        { "@Localidad", header.Localidad },
+                        { "@Barrio", header.Barrio },
+                        { "@CodigoPostal", header.CodigoPostal },
+                        { "@CUILCUIT", header.CUILCUIT },
+                        { "@FechaVencimiento", header.FechaVencimiento },
+                        { "@NumeroCAE", header.NumeroCAE },
                         { "@CondicionPago", header.CondicionPago },
-                        { "@Importe", importe }, 
-                        { "@MontoIVA", montoIVA }, 
-                        { "@MontoGravado", montoGravado }, 
-                        { "@MontoNoGravado", montoNoGravado }, 
-                        { "@Subtotal", subtotal }, 
+                        { "@Importe", importe },
+                        { "@MontoIVA", montoIVA },
+                        { "@MontoGravado", montoGravado },
+                        { "@MontoNoGravado", montoNoGravado },
+                        { "@Subtotal", subtotal },
                         { "@CodigoBarra", header.CodigoBarra },
-                        { "@RefPagoMisCuentas", header.RefPagoMisCuentas }, 
-                        { "@RefRedLink", header.RefRedLink }, 
+                        { "@RefPagoMisCuentas", header.RefPagoMisCuentas },
+                        { "@RefRedLink", header.RefRedLink },
                         { "@Email", header.Email }
                     };
 
@@ -243,12 +252,14 @@ namespace FE2PDF
 
                     foreach (var detail in header.Items)
                     {
-                        var monto = Convert.ToDouble(detail.Monto.Replace(".", "")) / 100;
+                        var monto = Convert.ToDouble(detail.MontoFacturado.Replace(".", "")) / 100;
 
                         query = $@"INSERT INTO Detail(HeaderId, Detalle, MontoFacturado) VALUES({headerId},'{detail.Detalle}',{monto});";
 
                         _db.ExecuteNonQuery(query);
                     }
+
+                    barProgress.PerformStep();
                 }
 
                 _db.CommitTran();
@@ -266,20 +277,72 @@ namespace FE2PDF
             finally
             {
                 _db.Disconnect();
+
+                barProgress.Value = 0;
             }
         }
 
         private void GeneratePDF()
         {
+            var template = File.ReadAllText(Path.Combine(Application.StartupPath, $@"template.html"));
+
+            var start = template.IndexOf(@"<table class=""details"">", 0, StringComparison.OrdinalIgnoreCase) + @"<table class=""details"">".Length;
+            var end   = template.IndexOf(@"</table>", start, StringComparison.OrdinalIgnoreCase);
+            var templateDetail = template.Substring(start, end - start);
+            
+            var converter = new HtmlToPdf
+            {
+                Options =
+                {
+                    PdfPageSize = PdfPageSize.A4,
+                    PdfPageOrientation = PdfPageOrientation.Portrait,
+                    WebPageWidth = 210,
+                    WebPageHeight = 297,
+                }
+            };
+
+            barProgress.Style = ProgressBarStyle.Continuous;
+            barProgress.Maximum = _data.Count;
+
             foreach (var header in _data)
             {
-                
+                var html = template;
+
+                var properties = typeof(Header).GetProperties();
+
+                html = properties.Aggregate(html, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(header, null).ToString()));
+
+                var htmlDetail = string.Empty;
+
+                foreach (var detail in header.Items)
+                {
+                    htmlDetail += templateDetail;
+
+                    properties = typeof(Detail).GetProperties();
+
+                    htmlDetail = properties.Aggregate(htmlDetail, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(detail, null).ToString()));
+                }
+
+                html = html.Replace(templateDetail, htmlDetail);
+
+                //Generate PDF file
+                var doc = converter.ConvertHtmlString(html);
+
+                var pdfName = $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf";
+                var outputFile = Path.Combine(txtOutputFolder.Text, pdfName); 
+
+                if (File.Exists(outputFile))
+                    File.Delete(outputFile);
+
+                doc.Save(outputFile);
+                doc.Close();
+
+                barProgress.PerformStep();
             }
         }
 
         private void SendEmails()
         {
-
         }
     }
 }

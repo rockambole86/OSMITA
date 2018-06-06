@@ -36,6 +36,9 @@
             this.btnSearchInputFile = new System.Windows.Forms.Button();
             this.btnSearchOutputFolder = new System.Windows.Forms.Button();
             this.btnProcess = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.barProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblInputFile
@@ -114,11 +117,29 @@
             this.btnProcess.UseVisualStyleBackColor = true;
             this.btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.barProgress});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 177);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(545, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 13;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // barProgress
+            // 
+            this.barProgress.Name = "barProgress";
+            this.barProgress.Size = new System.Drawing.Size(542, 16);
+            this.barProgress.Step = 1;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(545, 179);
+            this.ClientSize = new System.Drawing.Size(545, 199);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnProcess);
             this.Controls.Add(this.btnSearchOutputFolder);
             this.Controls.Add(this.btnSearchInputFile);
@@ -127,8 +148,11 @@
             this.Controls.Add(this.chkSendEmail);
             this.Controls.Add(this.lblOutputFolder);
             this.Controls.Add(this.lblInputFile);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Main";
             this.Text = "Form1";
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,6 +167,8 @@
         private System.Windows.Forms.Button btnSearchInputFile;
         private System.Windows.Forms.Button btnSearchOutputFolder;
         private System.Windows.Forms.Button btnProcess;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar barProgress;
     }
 }
 

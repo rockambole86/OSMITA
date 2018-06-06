@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections;
+using System.Data;
 using System.Data.SQLite;
 
 namespace FE2PDF
@@ -70,11 +72,22 @@ namespace FE2PDF
             _transaction = null;
         }
 
-        public void ExecuteNonQuery(string query)
+        public void ExecuteNonQuery(string query, Hashtable parameters = null)
         {
             _command = _connection.CreateCommand();
             _command.CommandText = query;
             _command.CommandType = CommandType.Text;
+
+            if (parameters != null && parameters.Count > 0)
+            {
+                _command.Parameters.Clear();
+
+                foreach (DictionaryEntry p in parameters)
+                {
+                    _command.Parameters.AddWithValue(p.Key.ToString(), p.Value ?? DBNull.Value);
+                }
+            }
+
             _command.ExecuteNonQuery();
         }
 
