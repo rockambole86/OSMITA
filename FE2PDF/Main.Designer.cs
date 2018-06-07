@@ -150,7 +150,7 @@
             this.Controls.Add(this.lblInputFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Main";
-            this.Text = "Form1";
+            this.Text = "FE2PDF";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);

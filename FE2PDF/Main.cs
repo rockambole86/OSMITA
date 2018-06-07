@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Windows.Forms;
 using SelectPdf;
 
@@ -99,6 +100,14 @@ namespace FE2PDF
             ConfigInfo.SourcePath = ConfigurationManager.AppSettings["SourcePath"];
             ConfigInfo.ProcessedPath = ConfigurationManager.AppSettings["ProcessedPath"];
             ConfigInfo.ErrorPath = ConfigurationManager.AppSettings["ErrorPath"];
+
+            ConfigInfo.SMTPServer   = ConfigurationManager.AppSettings["mail_smtp_server"];
+            ConfigInfo.SMTPUser     = ConfigurationManager.AppSettings["mail_smtp_server_user"];
+            ConfigInfo.SMTPPassword = ConfigurationManager.AppSettings["mail_smtp_server_pass"];
+            ConfigInfo.SMTPPort     = Convert.ToInt32(ConfigurationManager.AppSettings["mail_smtp_server_port"]);
+
+            ConfigInfo.EmailFromAddress = ConfigurationManager.AppSettings["mail_from_address"];
+
         }
 
         private bool LoadTXT()
@@ -343,6 +352,38 @@ namespace FE2PDF
 
         private void SendEmails()
         {
+            var mailAuthentication = new  System.Net.NetworkCredential(ConfigInfo.SMTPUser, ConfigInfo.SMTPPassword);
+            
+            var mailClient = new SmtpClient(ConfigInfo.SMTPServer, ConfigInfo.SMTPPort)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = mailAuthentication
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(ConfigInfo.EmailFromAddress),
+                Subject = "FE2PDF",
+                IsBodyHtml = true,
+                Body = ""
+            };
+
+            foreach (var header in _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList())
+            {
+                var pdfFile = Path.Combine(txtOutputFolder.Text, $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf");
+
+                mailMessage.To.Clear();
+                mailMessage.To.Add(header.Email);
+
+                mailMessage.Attachments.Clear();
+                mailMessage.Attachments.Add(new Attachment(pdfFile));
+
+                mailClient.Send(mailMessage);
+            }
+
+            mailClient.Dispose();
+            mailMessage.Dispose();
         }
     }
 }
