@@ -12,5 +12,6 @@
         public static int    SMTPPort     { get; set; }
 
         public static string EmailFromAddress { get; set; }
+        public static string EmailHtmlBody    { get; set; }
     }
 }

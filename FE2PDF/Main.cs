@@ -71,35 +71,63 @@ namespace FE2PDF
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(_inputFile.FullName))
-                return;
-
-            if (!Directory.Exists(txtOutputFolder.Text))
-                return;
-
-            if (!LoadTXT())
-                return;
-
-            if (!Import())
-                return;
-
-            GeneratePDF();
-
-            if (chkSendEmail.Checked)
+            try
             {
-                SendEmails();
+                txtInputFile.ReadOnly = true;
+                txtOutputFolder.ReadOnly = true;
+                chkSendEmail.Enabled = false;
+                btnSearchInputFile.Enabled = false;
+                btnSearchOutputFolder.Enabled = false;
+                btnProcess.Enabled = false;
+
+                if (!File.Exists(_inputFile.FullName))
+                    throw new FileNotFoundException($@"El archivo '{_inputFile.FullName}' no existe.");
+
+                if (!Directory.Exists(txtOutputFolder.Text))
+                    throw new DirectoryNotFoundException($@"El directorio '{txtOutputFolder.Text}' no existe.");
+
+                if (!LoadTXT())
+                    return;
+
+                if (!Import())
+                    return;
+
+                GeneratePDF();
+
+                if (chkSendEmail.Checked)
+                {
+                    SendEmails();
+                }
+
+                var newName = _inputFile.Name.Replace(_inputFile.Extension, $@"{DateTime.Now:yyyyMMddHHmmss}{_inputFile.Extension}");
+
+                File.Move(_inputFile.FullName, Path.Combine(ConfigInfo.ProcessedPath, newName));
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                barProgress.Style = ProgressBarStyle.Continuous;
+                barProgress.Minimum = 0;
+                barProgress.Maximum = 0;
+                barProgress.Value = 0;
 
-            var newName = _inputFile.Name.Replace(_inputFile.Extension, $@"{DateTime.Now:yyyyMMddHHmmss}{_inputFile.Extension}");
-
-            File.Move(_inputFile.FullName, Path.Combine(ConfigInfo.ProcessedPath, newName));
+                txtInputFile.ReadOnly = false;
+                txtOutputFolder.ReadOnly = false;
+                chkSendEmail.Enabled = true;
+                btnSearchInputFile.Enabled = true;
+                btnSearchOutputFolder.Enabled = true;
+                btnProcess.Enabled = true;
+            }
         }
 
         private static void ReadConfig()
         {
-            ConfigInfo.SourcePath = ConfigurationManager.AppSettings["SourcePath"];
+            ConfigInfo.SourcePath    = ConfigurationManager.AppSettings["SourcePath"];
             ConfigInfo.ProcessedPath = ConfigurationManager.AppSettings["ProcessedPath"];
-            ConfigInfo.ErrorPath = ConfigurationManager.AppSettings["ErrorPath"];
+            ConfigInfo.ErrorPath     = ConfigurationManager.AppSettings["ErrorPath"];
 
             ConfigInfo.SMTPServer   = ConfigurationManager.AppSettings["mail_smtp_server"];
             ConfigInfo.SMTPUser     = ConfigurationManager.AppSettings["mail_smtp_server_user"];
@@ -107,6 +135,7 @@ namespace FE2PDF
             ConfigInfo.SMTPPort     = Convert.ToInt32(ConfigurationManager.AppSettings["mail_smtp_server_port"]);
 
             ConfigInfo.EmailFromAddress = ConfigurationManager.AppSettings["mail_from_address"];
+            ConfigInfo.EmailHtmlBody    = ConfigurationManager.AppSettings["mail_html_body"];
 
         }
 
@@ -366,20 +395,32 @@ namespace FE2PDF
                 From = new MailAddress(ConfigInfo.EmailFromAddress),
                 Subject = "FE2PDF",
                 IsBodyHtml = true,
-                Body = ""
+                Body = ConfigInfo.EmailHtmlBody
             };
+
+            barProgress.Style = ProgressBarStyle.Continuous;
+            barProgress.Maximum = _data.Count;
 
             foreach (var header in _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList())
             {
                 var pdfFile = Path.Combine(txtOutputFolder.Text, $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf");
 
-                mailMessage.To.Clear();
-                mailMessage.To.Add(header.Email);
+                try
+                {
+                    mailMessage.To.Clear();
+                    mailMessage.To.Add(header.Email);
 
-                mailMessage.Attachments.Clear();
-                mailMessage.Attachments.Add(new Attachment(pdfFile));
+                    mailMessage.Attachments.Clear();
+                    mailMessage.Attachments.Add(new Attachment(pdfFile));
 
-                mailClient.Send(mailMessage);
+                    mailClient.Send(mailMessage);
+                }
+                catch
+                {
+                    // ignored
+                }
+
+                barProgress.PerformStep();
             }
 
             mailClient.Dispose();
