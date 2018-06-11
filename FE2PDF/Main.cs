@@ -135,6 +135,7 @@ namespace FE2PDF
             ConfigInfo.SMTPPort     = Convert.ToInt32(ConfigurationManager.AppSettings["mail_smtp_server_port"]);
 
             ConfigInfo.EmailFromAddress = ConfigurationManager.AppSettings["mail_from_address"];
+            ConfigInfo.EmailSubject     = ConfigurationManager.AppSettings["mail_subject"];
             ConfigInfo.EmailHtmlBody    = ConfigurationManager.AppSettings["mail_html_body"];
 
         }
@@ -393,10 +394,11 @@ namespace FE2PDF
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(ConfigInfo.EmailFromAddress),
-                Subject = "FE2PDF",
+                Subject = ConfigInfo.EmailSubject,
                 IsBodyHtml = true,
-                Body = ConfigInfo.EmailHtmlBody
+                Body = System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody)
             };
+
 
             barProgress.Style = ProgressBarStyle.Continuous;
             barProgress.Maximum = _data.Count;
