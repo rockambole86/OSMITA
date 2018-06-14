@@ -337,6 +337,7 @@ namespace FE2PDF
                     PdfPageOrientation = PdfPageOrientation.Portrait,
                     WebPageWidth = 210,
                     WebPageHeight = 297,
+                    CssMediaType = HtmlToPdfCssMediaType.Screen
                 }
             };
 
@@ -346,6 +347,31 @@ namespace FE2PDF
             foreach (var header in _data)
             {
                 var html = template;
+
+                string bgFile;
+
+                switch (header.CondicionIVA.ToLower())
+                {
+                    case "a":
+                    {
+                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_a.png")}";
+                        break;
+                    }
+                    case "b":
+                    {
+                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_b.png")}";
+                        break;
+                    }
+                    case "x":
+                    default:
+                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_x.png")}";
+
+                        break;
+                }
+
+                bgFile = bgFile.Replace("\\", "/");
+
+                html = html.Replace("{{BackgroundFilePath}}", bgFile);
 
                 var properties = typeof(Header).GetProperties();
 
