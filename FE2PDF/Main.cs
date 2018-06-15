@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 using System.Windows.Forms;
 using SelectPdf;
 
@@ -54,7 +55,7 @@ namespace FE2PDF
 
         private void btnSearchOutputFolder_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog()
+            using (var fbd = new FolderBrowserDialog
             {
                 ShowNewFolderButton = true,
                 Description = @"Directorio de salida"
@@ -146,6 +147,7 @@ namespace FE2PDF
 
             try
             {
+                lblStatus.Text = @"Cargando archivo";
                 barProgress.Style = ProgressBarStyle.Marquee;
 
                 var    sr     = new StreamReader(_inputFile.FullName);
@@ -216,6 +218,7 @@ namespace FE2PDF
             }
             finally
             {
+                lblStatus.Text = string.Empty;
                 barProgress.Style = ProgressBarStyle.Continuous;
             }
         }
@@ -226,6 +229,7 @@ namespace FE2PDF
 
             try
             {
+                lblStatus.Text = @"Importando registros";
                 barProgress.Style = ProgressBarStyle.Continuous;
                 barProgress.Maximum = _data.Count;
 
@@ -298,6 +302,7 @@ namespace FE2PDF
                         _db.ExecuteNonQuery(query);
                     }
 
+                    lblStatus.Text = $@"Registro {barProgress.Value}/{barProgress.Maximum}";
                     barProgress.PerformStep();
                 }
 
@@ -317,18 +322,94 @@ namespace FE2PDF
             {
                 _db.Disconnect();
 
+                lblStatus.Text = string.Empty;
                 barProgress.Value = 0;
             }
         }
 
         private void GeneratePDF()
         {
-            var template = File.ReadAllText(Path.Combine(Application.StartupPath, $@"template.html"));
+            try
+            {
+                var threads = new List<Thread>();
 
-            var start = template.IndexOf(@"<table class=""details"">", 0, StringComparison.OrdinalIgnoreCase) + @"<table class=""details"">".Length;
-            var end   = template.IndexOf(@"</table>", start, StringComparison.OrdinalIgnoreCase);
-            var templateDetail = template.Substring(start, end - start);
-            
+                var template = File.ReadAllText(Path.Combine(Application.StartupPath, $@"template.html"));
+
+                var start = template.IndexOf(@"<table class=""details"">", 0, StringComparison.OrdinalIgnoreCase) + @"<table class=""details"">".Length;
+                var end = template.IndexOf(@"</table>", start, StringComparison.OrdinalIgnoreCase);
+                var templateDetail = template.Substring(start, end - start);
+
+                lblStatus.Text = @"Generando PDF";
+                barProgress.Style = ProgressBarStyle.Continuous;
+                barProgress.Maximum = _data.Count;
+
+                foreach (var header in _data)
+                {
+                    var html = template;
+
+                    var bgFile = $"file:///{Path.Combine(Application.StartupPath, $"fc_{header.CondicionIVA.ToLower()}.png")}".Replace("\\", "/");
+
+                    html = html.Replace("{{BackgroundFilePath}}", bgFile);
+
+                    var properties = typeof(Header).GetProperties();
+
+                    html = properties.Aggregate(html, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(header, null).ToString()));
+
+                    var htmlDetail = string.Empty;
+
+                    foreach (var detail in header.Items)
+                    {
+                        htmlDetail += templateDetail;
+
+                        properties = typeof(Detail).GetProperties();
+
+                        htmlDetail = properties.Aggregate(htmlDetail, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(detail, null).ToString()));
+                    }
+
+                    html = html.Replace(templateDetail, htmlDetail);
+
+                    var pdfName    = $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf";
+                    var outputFile = Path.Combine(txtOutputFolder.Text, pdfName);
+
+                    var p = new object[] { html, outputFile };
+
+                    threads.Add(new Thread(delegate()
+                    {
+                        ConvertToPDF(p);
+                    }));
+                }
+
+                var batchSize = 10;
+                var currentBatch = 0;
+
+                while (true)
+                {
+                    threads.Where(t => t.ThreadState == ThreadState.Unstarted).Take(batchSize).ToList().ForEach(t => t.Start());
+
+                    currentBatch++;
+
+                    while(threads.Any(t => t.IsAlive))
+                    {
+                        Application.DoEvents();
+                    }
+
+                    if (currentBatch * batchSize > threads.Count + batchSize)
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ConvertToPDF(object state)
+        {
+            var p = state as object[];
+
+            var html = p[0].ToString();
+            var outputFile = p[1].ToString();
+
             var converter = new HtmlToPdf
             {
                 Options =
@@ -341,69 +422,20 @@ namespace FE2PDF
                 }
             };
 
-            barProgress.Style = ProgressBarStyle.Continuous;
-            barProgress.Maximum = _data.Count;
+            //Generate PDF file
+            var doc = converter.ConvertHtmlString(html);
+            
+            if (File.Exists(outputFile))
+                File.Delete(outputFile);
 
-            foreach (var header in _data)
+            doc.Save(outputFile);
+            doc.Close();
+
+            BeginInvoke((Action)(() =>
             {
-                var html = template;
-
-                string bgFile;
-
-                switch (header.CondicionIVA.ToLower())
-                {
-                    case "a":
-                    {
-                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_a.png")}";
-                        break;
-                    }
-                    case "b":
-                    {
-                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_b.png")}";
-                        break;
-                    }
-                    case "x":
-                    default:
-                        bgFile = $"file:///{Path.Combine(Application.StartupPath, "fc_x.png")}";
-
-                        break;
-                }
-
-                bgFile = bgFile.Replace("\\", "/");
-
-                html = html.Replace("{{BackgroundFilePath}}", bgFile);
-
-                var properties = typeof(Header).GetProperties();
-
-                html = properties.Aggregate(html, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(header, null).ToString()));
-
-                var htmlDetail = string.Empty;
-
-                foreach (var detail in header.Items)
-                {
-                    htmlDetail += templateDetail;
-
-                    properties = typeof(Detail).GetProperties();
-
-                    htmlDetail = properties.Aggregate(htmlDetail, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(detail, null).ToString()));
-                }
-
-                html = html.Replace(templateDetail, htmlDetail);
-
-                //Generate PDF file
-                var doc = converter.ConvertHtmlString(html);
-
-                var pdfName = $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf";
-                var outputFile = Path.Combine(txtOutputFolder.Text, pdfName); 
-
-                if (File.Exists(outputFile))
-                    File.Delete(outputFile);
-
-                doc.Save(outputFile);
-                doc.Close();
-
                 barProgress.PerformStep();
-            }
+                lblStatus.Text = $@"Archivo PDF {barProgress.Value}/{barProgress.Maximum}";
+            }));
         }
 
         private void SendEmails()

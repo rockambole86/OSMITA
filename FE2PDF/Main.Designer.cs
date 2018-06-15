@@ -38,6 +38,7 @@
             this.btnProcess = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.barProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,6 +121,7 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
             this.barProgress});
             this.statusStrip1.Location = new System.Drawing.Point(0, 177);
             this.statusStrip1.Name = "statusStrip1";
@@ -131,8 +133,16 @@
             // barProgress
             // 
             this.barProgress.Name = "barProgress";
-            this.barProgress.Size = new System.Drawing.Size(542, 16);
+            this.barProgress.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.barProgress.Size = new System.Drawing.Size(392, 16);
             this.barProgress.Step = 1;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = false;
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(150, 17);
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // Main
             // 
@@ -169,6 +179,7 @@
         private System.Windows.Forms.Button btnProcess;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar barProgress;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
     }
 }
 
