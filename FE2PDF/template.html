@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <title>{{TipoComprobante}}{{CondicionIVA}}{{CentroEmisor}}{{NumeroComprobante}}</title>
     <style type="text/css" media="all">
         @page {
             size: A4;
@@ -10,9 +11,8 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-family: 'Consolas', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             font-size: 9pt;
-            
         }
 
         .page {
@@ -40,7 +40,7 @@
 
         table tr td {
             border-collapse: collapse;
-            
+
             vertical-align: top;
             text-align: left;
             overflow: hidden;
@@ -53,6 +53,10 @@
         .details {
             margin: 0;
             padding: 0;
+        }
+
+        .fc_b {
+            visibility: {{ShowSubtotales}};
         }
     </style>
 </head>
@@ -71,18 +75,18 @@
         <tr style="height: 3mm;"><td colspan="3"></td></tr>
         <tr style="height: 46mm;">
             <td colspan="2">
-                <span style="margin-left: 18mm; margin-top: 11mm;">{{Detalle1}}{{Detalle2}}</span><br />
+                <span style="margin-left: 18mm; margin-top: 11mm; max-height: 22pt; height: 22pt; overflow: hidden; width: 107mm;">{{Detalle1}}{{Detalle2}}</span><br />
 
-                <span style="margin-left: 18mm; margin-top: 4mm;">{{Domicilio}}</span><br />
-                <span style="margin-left: 18mm; margin-top: 1mm;">{{Localidad}}{{CodigoPostal}}{{Barrio}}</span><br />
+                <span style="margin-left: 18mm; margin-top: 1mm;">{{Domicilio}}</span><br />
+                <span style="margin-left: 18mm; margin-top: 1mm; max-height: 22pt; height: 22pt; overflow: hidden; width: 107mm;">{{Localidad}}&nbsp;{{CodigoPostal}}&nbsp;{{Barrio}}</span><br />
 
-                <span style="margin-left: 2mm; margin-top: 1mm;">Vencimiento {{FechaVencimiento}}</span><br />
+                <span style="margin-left: 2mm; margin-top: 1mm;">Vencimiento&nbsp;{{FechaVencimiento}}</span><br />
                 <span style="margin-left: 30mm; margin-top: 1.5mm;">{{CondicionPago}}</span>
             </td>
             <td>
                 <span style="margin-left: 10mm; margin-top: 19.5mm;">{{CUILCUIT}}</span><br />
 
-                <span style="margin-left: 2mm; margin-top: 13.5mm;">**CAE {{NumeroCAE}}</span>
+                <span style="margin-left: 2mm; margin-top: 13.5mm;">**CAE&nbsp;{{NumeroCAE}}</span>
             </td>
         </tr>
         <tr style="height: 2mm;"><td colspan="3"></td></tr>
@@ -100,6 +104,7 @@
                 </table>
             </td>
         </tr>
+        <!---->
         <tr style="height: 15mm;">
             <td colspan="3" style="padding-left: 2mm; vertical-align: middle;">
                 <span>Ref. Pago Mis Cuentas {{RefPagoMisCuentas}}</span><br />
@@ -110,16 +115,17 @@
         <tr style="height: 49mm;">
             <td colspan="2"></td>
             <td style="text-align: right;">
-                <span style="margin-top: 6mm;  margin-right: 2mm;">{{MontoNoGravado}}</span><br />
-                <span style="margin-top: 4mm;  margin-right: 2mm;">{{MontoGravado}}</span><br />
-                <span style="margin-top: 4mm;  margin-right: 2mm;">{{Subtotal}}</span><br />
-                <span style="margin-top: 12mm; margin-right: 2mm;">{{MontoIVA}}</span><br />
+                <span class="fc_b" style="margin-top: 6mm;  margin-right: 2mm;">{{MontoNoGravado}}</span><br />
+                <span class="fc_b" style="margin-top: 4mm;  margin-right: 2mm;">{{MontoGravado}}</span><br />
+                <span class="fc_b" style="margin-top: 4mm;  margin-right: 2mm;">{{Subtotal}}</span><br />
+                <span class="fc_b" style="margin-top: 12mm; margin-right: 2mm;">{{MontoIVA}}</span><br />
             </td>
         </tr>
         <tr style="height: 2mm;"><td colspan="3"></td></tr>
         <tr style="height: 15mm;">
             <td colspan="2">
-                <span style="margin-top: 6mm; margin-left: 5mm;">{{CodigoBarra}}</span>
+                <img style="height: 8mm; width: 50mm; margin-left: 4mm; display: block;" src="{{Barcode}}" />
+                <span style="margin-left: 5mm;">{{CodigoBarra}}</span>
             </td>
             <td style="text-align: right;">
                 <span style="margin-top: 6mm; margin-right: 2mm;">{{Importe}}</span>

@@ -346,11 +346,19 @@ namespace FE2PDF
                 foreach (var header in _data)
                 {
                     var html = template;
-
                     var bgFile = $"file:///{Path.Combine(Application.StartupPath, $"fc_{header.CondicionIVA.ToLower()}.png")}".Replace("\\", "/");
 
                     html = html.Replace("{{BackgroundFilePath}}", bgFile);
+                    html = html.Replace("{{ShowSubtotales}}", header.CondicionIVA.Equals("b", StringComparison.OrdinalIgnoreCase ) ? "hidden" : "visible");
 
+                    //header.CodigoBarra = "977123456700";
+
+                    if (!string.IsNullOrEmpty(header.CodigoBarra))
+                    {
+                        var barcode = Int2of5.GenerateBarCode(header.CodigoBarra, 1000, 100, 10).ToBase64();
+                        html = html.Replace("{{Barcode}}", $"data:image/png;base64, {barcode}");
+                    }
+                    
                     var properties = typeof(Header).GetProperties();
 
                     html = properties.Aggregate(html, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(header, null).ToString()));
@@ -377,6 +385,8 @@ namespace FE2PDF
                     {
                         ConvertToPDF(p);
                     }));
+
+                    Application.DoEvents();
                 }
 
                 var batchSize = 10;
@@ -454,9 +464,8 @@ namespace FE2PDF
                 From = new MailAddress(ConfigInfo.EmailFromAddress),
                 Subject = ConfigInfo.EmailSubject,
                 IsBodyHtml = true,
-                Body = System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody)
+                Body = !string.IsNullOrEmpty(ConfigInfo.EmailHtmlBody) ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody) : string.Empty
             };
-
 
             barProgress.Style = ProgressBarStyle.Continuous;
             barProgress.Maximum = _data.Count;
