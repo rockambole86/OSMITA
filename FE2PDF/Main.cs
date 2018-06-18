@@ -208,6 +208,8 @@ namespace FE2PDF
                     }
                 }
 
+                _data.Add(header);
+
                 return true;
             }
             catch (Exception ex)
@@ -357,6 +359,11 @@ namespace FE2PDF
                     {
                         var barcode = Int2of5.GenerateBarCode(header.CodigoBarra, 1000, 100, 10).ToBase64();
                         html = html.Replace("{{Barcode}}", $"data:image/png;base64, {barcode}");
+                        html = html.Replace("{{show-barcode}}", "");
+                    }
+                    else
+                    {
+                        html = html.Replace("{{show-barcode}}", "display: none !important; visibility: hidden;");
                     }
                     
                     var properties = typeof(Header).GetProperties();

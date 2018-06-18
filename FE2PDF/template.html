@@ -58,6 +58,10 @@
         .fc_b {
             visibility: {{ShowSubtotales}};
         }
+
+        #image-barcode {
+            {{show-barcode}}
+        }
     </style>
 </head>
 
@@ -124,7 +128,7 @@
         <tr style="height: 2mm;"><td colspan="3"></td></tr>
         <tr style="height: 15mm;">
             <td colspan="2">
-                <img style="height: 8mm; width: 50mm; margin-left: 4mm; display: block;" src="{{Barcode}}" />
+                <img id="image-barcode" style="height: 8mm; width: 50mm; margin-left: 4mm; display: block;" src="{{Barcode}}" />
                 <span style="margin-left: 5mm;">{{CodigoBarra}}</span>
             </td>
             <td style="text-align: right;">
