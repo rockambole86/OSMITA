@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using SelectPdf;
@@ -150,7 +151,7 @@ namespace FE2PDF
                 lblStatus.Text = @"Cargando archivo";
                 barProgress.Style = ProgressBarStyle.Marquee;
 
-                var    sr     = new StreamReader(_inputFile.FullName);
+                var    sr     = new StreamReader(_inputFile.FullName, Encoding.GetEncoding(850));
                 Header header = null;
 
                 while (!sr.EndOfStream)
