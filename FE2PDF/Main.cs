@@ -104,6 +104,12 @@ namespace FE2PDF
                 var newName = _inputFile.Name.Replace(_inputFile.Extension, $@"{DateTime.Now:yyyyMMddHHmmss}{_inputFile.Extension}");
 
                 File.Move(_inputFile.FullName, Path.Combine(ConfigInfo.ProcessedPath, newName));
+
+
+                txtInputFile.Text = string.Empty;
+                chkSendEmail.Checked = true;
+
+                MessageBox.Show($@"Proceso finalizado correctamente");
             }
             catch (Exception ex)
             {

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 
 namespace FE2PDF
 {
@@ -16,7 +18,7 @@ namespace FE2PDF
 
         private DB()
         {
-            _connection = new SQLiteConnection("Data Source=FE2PDF.db;Version=3;New=False;Compress=True;");
+            _connection = new SQLiteConnection(ConfigurationManager.ConnectionStrings["FE2PDF"].ConnectionString);
         }
 
         public static DB Instance()
