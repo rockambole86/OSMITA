@@ -10,6 +10,7 @@
         public static string SMTPUser     { get; set; }
         public static string SMTPPassword { get; set; }
         public static int    SMTPPort     { get; set; }
+        public static bool   SMTPUseSSL   { get; set; }
 
         public static string EmailFromAddress { get; set; }
         public static string EmailSubject     { get; set; } = "";

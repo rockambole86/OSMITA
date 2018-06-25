@@ -141,11 +141,11 @@ namespace FE2PDF
             ConfigInfo.SMTPUser     = ConfigurationManager.AppSettings["mail_smtp_server_user"];
             ConfigInfo.SMTPPassword = ConfigurationManager.AppSettings["mail_smtp_server_pass"];
             ConfigInfo.SMTPPort     = Convert.ToInt32(ConfigurationManager.AppSettings["mail_smtp_server_port"]);
+            ConfigInfo.SMTPUseSSL   = Convert.ToBoolean(ConfigurationManager.AppSettings["mail_smtp_server_ssl"]);
 
             ConfigInfo.EmailFromAddress = ConfigurationManager.AppSettings["mail_from_address"];
             ConfigInfo.EmailSubject     = ConfigurationManager.AppSettings["mail_subject"];
             ConfigInfo.EmailHtmlBody    = ConfigurationManager.AppSettings["mail_html_body"];
-
         }
 
         private bool LoadTXT()
@@ -464,11 +464,13 @@ namespace FE2PDF
 
         private void SendEmails()
         {
+            lblStatus.Text = @"Enviando emails";
+
             var mailAuthentication = new  System.Net.NetworkCredential(ConfigInfo.SMTPUser, ConfigInfo.SMTPPassword);
             
             var mailClient = new SmtpClient(ConfigInfo.SMTPServer, ConfigInfo.SMTPPort)
             {
-                EnableSsl = true,
+                EnableSsl = ConfigInfo.SMTPUseSSL,
                 UseDefaultCredentials = false,
                 Credentials = mailAuthentication
             };
@@ -481,29 +483,43 @@ namespace FE2PDF
                 Body = !string.IsNullOrEmpty(ConfigInfo.EmailHtmlBody) ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody) : string.Empty
             };
 
+            var headers = _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList();
+
             barProgress.Style = ProgressBarStyle.Continuous;
-            barProgress.Maximum = _data.Count;
+            barProgress.Maximum = headers.Count;
 
-            foreach (var header in _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList())
+            foreach (var header in headers)
             {
-                var pdfFile = Path.Combine(txtOutputFolder.Text, $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf");
-
                 try
                 {
+                    var pdfFile = Path.Combine(txtOutputFolder.Text, $@"{header.TipoComprobante}{header.CondicionIVA}{header.CentroEmisor}{header.NumeroComprobante}.pdf");
+
+                    if (!File.Exists(pdfFile))
+                        continue;
+
                     mailMessage.To.Clear();
                     mailMessage.To.Add(header.Email);
+                    //mailMessage.To.Add("enw1986@hotmail.com");
+                    //mailMessage.To.Add("mrubio@rdmsolutions.com.ar");
 
                     mailMessage.Attachments.Clear();
                     mailMessage.Attachments.Add(new Attachment(pdfFile));
 
                     mailClient.Send(mailMessage);
                 }
-                catch
+                catch(Exception ex)
                 {
                     // ignored
+                    Console.WriteLine(ex.Message);
                 }
+                finally
+                {
+                    barProgress.PerformStep();
 
-                barProgress.PerformStep();
+                    lblStatus.Text = $@"Email {barProgress.Value}/{barProgress.Maximum}";
+
+                    Application.DoEvents();
+                }
             }
 
             mailClient.Dispose();
