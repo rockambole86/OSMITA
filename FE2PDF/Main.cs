@@ -103,7 +103,7 @@ namespace FE2PDF
 
                 var newName = _inputFile.Name.Replace(_inputFile.Extension, $@"{DateTime.Now:yyyyMMddHHmmss}{_inputFile.Extension}");
 
-                File.Move(_inputFile.FullName, Path.Combine(ConfigInfo.ProcessedPath, newName));
+                File.Move(_inputFile.FullName, Path.Combine(txtOutputFolder.Text, newName));
 
 
                 txtInputFile.Text = string.Empty;
