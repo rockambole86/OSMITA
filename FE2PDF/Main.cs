@@ -117,6 +117,7 @@ namespace FE2PDF
             }
             finally
             {
+                lblStatus.Text = string.Empty;
                 barProgress.Style = ProgressBarStyle.Continuous;
                 barProgress.Minimum = 0;
                 barProgress.Maximum = 0;
@@ -159,6 +160,7 @@ namespace FE2PDF
 
                 var    sr     = new StreamReader(_inputFile.FullName, Encoding.GetEncoding(850));
                 Header header = null;
+                var lineNumber = 0;
 
                 while (!sr.EndOfStream)
                 {
@@ -213,6 +215,11 @@ namespace FE2PDF
 
                         header.Items.Add(item);
                     }
+
+                    lineNumber++;
+                    lblStatus.Text = $@"Cargando línea {lineNumber}";
+
+                    Application.DoEvents();
                 }
 
                 _data.Add(header);
@@ -257,12 +264,6 @@ namespace FE2PDF
 
                 foreach (var header in _data)
                 {
-                    var importe        = Convert.ToDouble(header.Importe.Replace(".", "")) / 100;
-                    var montoIVA       = Convert.ToDouble(header.MontoIVA.Replace(".", "")) / 100;
-                    var montoGravado   = Convert.ToDouble(header.MontoGravado.Replace(".", "")) / 100;
-                    var montoNoGravado = Convert.ToDouble(header.MontoNoGravado.Replace(".", "")) / 100;
-                    var subtotal       = Convert.ToDouble(header.Subtotal.Replace(".", "")) / 100;
-
                     query = $@"INSERT INTO Header(ImportedFileId, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email) ";
                     query += $@"VALUES(@ImportedFileId, @NombreComprobante, @TipoComprobante, @CondicionIVA, @CentroEmisor, @NumeroComprobante, @FechaEmision, @Detalle1, @Detalle2, @Domicilio, @Localidad, @Barrio, @CodigoPostal, @CUILCUIT, @FechaVencimiento, @NumeroCAE, @CondicionPago, @Importe, @MontoIVA, @MontoGravado, @MontoNoGravado, @Subtotal, @CodigoBarra, @RefPagoMisCuentas, @RefRedLink, @Email);";
 
@@ -285,11 +286,11 @@ namespace FE2PDF
                         { "@FechaVencimiento", header.FechaVencimiento },
                         { "@NumeroCAE", header.NumeroCAE },
                         { "@CondicionPago", header.CondicionPago },
-                        { "@Importe", importe },
-                        { "@MontoIVA", montoIVA },
-                        { "@MontoGravado", montoGravado },
-                        { "@MontoNoGravado", montoNoGravado },
-                        { "@Subtotal", subtotal },
+                        { "@Importe", header.Importe },
+                        { "@MontoIVA", header.MontoIVA },
+                        { "@MontoGravado", header.MontoGravado },
+                        { "@MontoNoGravado", header.MontoNoGravado },
+                        { "@Subtotal", header.Subtotal },
                         { "@CodigoBarra", header.CodigoBarra },
                         { "@RefPagoMisCuentas", header.RefPagoMisCuentas },
                         { "@RefRedLink", header.RefRedLink },
@@ -304,15 +305,15 @@ namespace FE2PDF
 
                     foreach (var detail in header.Items)
                     {
-                        var monto = Convert.ToDouble(detail.MontoFacturado.Replace(".", "")) / 100;
-
-                        query = $@"INSERT INTO Detail(HeaderId, Detalle, MontoFacturado) VALUES({headerId},'{detail.Detalle}',{monto});";
+                        query = $@"INSERT INTO Detail(HeaderId, Detalle, MontoFacturado) VALUES({headerId},'{detail.Detalle}',{detail.MontoFacturado});";
 
                         _db.ExecuteNonQuery(query);
                     }
 
                     lblStatus.Text = $@"Registro {barProgress.Value}/{barProgress.Maximum}";
                     barProgress.PerformStep();
+
+                    Application.DoEvents();
                 }
 
                 _db.CommitTran();
