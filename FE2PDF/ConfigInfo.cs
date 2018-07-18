@@ -5,6 +5,8 @@
         public static string SourcePath    { get; set; }
         public static string ProcessedPath { get; set; }
         public static string ErrorPath     { get; set; }
+        public static int    BatchSize     { get; set; }
+        public static bool   SaveHtml      { get; set; }
 
         public static string SMTPServer   { get; set; }
         public static string SMTPUser     { get; set; }

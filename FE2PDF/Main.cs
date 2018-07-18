@@ -8,7 +8,11 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using fyiReporting.RdlViewer;
+using fyiReporting.RDL;
+using iTextSharp.text;
 using SelectPdf;
+using HtmlToPdf = SelectPdf.HtmlToPdf;
 
 namespace FE2PDF
 {
@@ -94,7 +98,10 @@ namespace FE2PDF
                 if (!Import())
                     return;
 
-                GeneratePDF();
+                if (chkMethodReport.Checked)
+                    GeneratePDF2();
+                else
+                    GeneratePDF();
 
                 if (chkSendEmail.Checked)
                 {
@@ -137,6 +144,8 @@ namespace FE2PDF
             ConfigInfo.SourcePath    = ConfigurationManager.AppSettings["SourcePath"];
             ConfigInfo.ProcessedPath = ConfigurationManager.AppSettings["ProcessedPath"];
             ConfigInfo.ErrorPath     = ConfigurationManager.AppSettings["ErrorPath"];
+            ConfigInfo.BatchSize     = Convert.ToInt32(ConfigurationManager.AppSettings["BatchSize"]);
+            ConfigInfo.SaveHtml      = Convert.ToBoolean(ConfigurationManager.AppSettings["SaveHtml"]);
 
             ConfigInfo.SMTPServer   = ConfigurationManager.AppSettings["mail_smtp_server"];
             ConfigInfo.SMTPUser     = ConfigurationManager.AppSettings["mail_smtp_server_user"];
@@ -349,19 +358,19 @@ namespace FE2PDF
                 var end = template.IndexOf(@"</table>", start, StringComparison.OrdinalIgnoreCase);
                 var templateDetail = template.Substring(start, end - start);
 
-                lblStatus.Text = @"Generando PDF";
+                lblStatus.Text = @"Generando templates";
                 barProgress.Style = ProgressBarStyle.Continuous;
                 barProgress.Maximum = _data.Count;
 
                 foreach (var header in _data)
                 {
                     var html = template;
-                    var bgFile = $"file:///{Path.Combine(Application.StartupPath, $"fc_{header.CondicionIVA.ToLower()}.png")}".Replace("\\", "/");
+                    var bgFile = $"file:///{Path.Combine(Application.StartupPath, $"fc_{header.CondicionIVA.ToLower()}.jpg")}".Replace("\\", "/");
 
                     html = html.Replace("{{BackgroundFilePath}}", bgFile);
                     html = html.Replace("{{ShowSubtotales}}", header.CondicionIVA.Equals("b", StringComparison.OrdinalIgnoreCase ) ? "hidden" : "visible");
 
-                    //header.CodigoBarra = "977123456700";
+                    header.CodigoBarra = "977123456700";
 
                     if (!string.IsNullOrEmpty(header.CodigoBarra))
                     {
@@ -402,10 +411,15 @@ namespace FE2PDF
                     }));
 
                     Application.DoEvents();
+
+                    barProgress.PerformStep();
+                    lblStatus.Text = $@"Template {barProgress.Value}/{barProgress.Maximum}";
                 }
 
-                var batchSize = 10;
+                var batchSize = ConfigInfo.BatchSize;
                 var currentBatch = 0;
+
+                barProgress.Value = barProgress.Minimum;
 
                 while (true)
                 {
@@ -443,7 +457,8 @@ namespace FE2PDF
                     PdfPageOrientation = PdfPageOrientation.Portrait,
                     WebPageWidth = 210,
                     WebPageHeight = 297,
-                    CssMediaType = HtmlToPdfCssMediaType.Screen
+                    CssMediaType = HtmlToPdfCssMediaType.Screen,
+                    DrawBackground = true
                 }
             };
 
@@ -456,11 +471,56 @@ namespace FE2PDF
             doc.Save(outputFile);
             doc.Close();
 
+            if (ConfigInfo.SaveHtml)
+                File.WriteAllText(outputFile.Replace(".pdf", ".html"), html, Encoding.UTF8);
+
             BeginInvoke((Action)(() =>
             {
                 barProgress.PerformStep();
                 lblStatus.Text = $@"Archivo PDF {barProgress.Value}/{barProgress.Maximum}";
             }));
+        }
+
+        private void GeneratePDF2()
+        {
+            var viewer = new RdlViewer
+            {
+                SourceFile = new Uri(Path.Combine(Application.StartupPath, "FE2PDF.rdl"))
+            };
+
+            foreach (var h in _data)
+            {
+                var header  = new List<Header>{ h };
+                var details = h.Items;
+
+                viewer.Report.DataSets["Header"].SetData(header);
+                viewer.Report.DataSets["Details"].SetData(details);
+
+                var barcode = !string.IsNullOrEmpty(h.CodigoBarra) 
+                    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 10).ToBase64() 
+                    : string.Empty;
+
+                viewer.Parameters = string.Empty;
+                viewer.Parameters += $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}"; 
+                
+                if (!string.IsNullOrEmpty(barcode))
+                    viewer.Parameters += $@"&barcode={barcode}"; 
+
+                viewer.Rebuild();
+
+                var pdfName    = $@"{h.TipoComprobante}{h.CondicionIVA}{h.CentroEmisor}{h.NumeroComprobante}.pdf";
+                var outputFile = Path.Combine(txtOutputFolder.Text, pdfName);
+
+                if (File.Exists(outputFile))
+                    File.Delete(outputFile);
+
+                viewer.SaveAs(outputFile, OutputPresentationType.PDF);
+
+                barProgress.PerformStep();
+                lblStatus.Text = $@"Archivo PDF {barProgress.Value}/{barProgress.Maximum}";
+
+                Application.DoEvents();
+            }
         }
 
         private void SendEmails()

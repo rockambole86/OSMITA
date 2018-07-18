@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Description>
+  </Description>
+  <Author>Eduardo Wierzbicki
+  </Author>
+  <PageHeight>297mm</PageHeight>
+  <PageWidth>210mm</PageWidth>
+  <Width>190.5mm</Width>
+  <TopMargin>0mm</TopMargin>
+  <LeftMargin>0mm</LeftMargin>
+  <RightMargin>0mm</RightMargin>
+  <BottomMargin>0mm</BottomMargin>
+  <PageHeader>
+    <Height>0pt</Height>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageHeader>
+  <Body>
+    <Height>297mm</Height>
+    <ReportItems>
+      <List Name="lstData">
+        <Height>297mm</Height>
+        <Width>210mm</Width>
+        <Left>0pt</Left>
+        <Top>0pt</Top>
+        <ZIndex>1</ZIndex>
+        <DataSetName>Header</DataSetName>
+        <ReportItems>
+          <Image Name="imgBackground" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>297mm</Height>
+            <Width>210mm</Width>
+            <Left>0.00pt</Left>
+            <Top>0.00pt</Top>
+            <Style>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+            <Source>External</Source>
+            <Value>={?bg_image}</Value>
+            <Sizing>Fit</Sizing>
+            <ZIndex>0</ZIndex>
+          </Image>
+          <Textbox Name="txtNombreComprobante">
+            <Height>12.00pt</Height>
+            <Width>164.88pt</Width>
+            <Value>={NombreComprobante}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>405.50pt</Left>
+            <Top>31.00pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtInfoComprobante" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12pt</Height>
+            <Width>164.88pt</Width>
+            <Value>={TipoComprobante} &amp; ' ' &amp; {CondicionIVA} &amp; ' ' &amp; {CentroEmisor} &amp; ' ' &amp; {NumeroComprobante}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>405.5pt</Left>
+            <Top>43pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtFecha" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12pt</Height>
+            <Width>132.53pt</Width>
+            <Value>={FechaEmision}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>433.90pt</Left>
+            <Top>67pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtDetalle" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>24pt</Height>
+            <Width>313.98pt</Width>
+            <Value>={Detalle1} &amp; {Detalle2}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>73pt</Left>
+            <Top>127pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Top</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtDomicilio" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>24.00pt</Height>
+            <Width>313.98pt</Width>
+            <Value>={Domicilio} &amp; {Localidad} &amp; {CodigoPostal} &amp; {Barrio}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>73.00pt</Left>
+            <Top>151.00pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Top</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtCUIT" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.75pt</Height>
+            <Width>117.50pt</Width>
+            <Value>={CUILCUIT}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>439.1pt</Left>
+            <Top>148pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtVencimiento" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>320pt</Width>
+            <Value>='Vencimiento: ' &amp; {FechaVencimiento}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>36.1pt</Left>
+            <Top>180.9pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtCondicionPago" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>200pt</Width>
+            <Value>={CondicionPago}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>108.0pt</Left>
+            <Top>198.0pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtCAE" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>='**CAE ' &amp; {NumeroCAE}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>410pt</Left>
+            <Top>198pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtRefPagoMisCuentas" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>300pt</Width>
+            <Value>='Ref. Pago Mis Cuentas ' &amp; {RefPagoMisCuentas}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>32.0pt</Left>
+            <Top>550pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtRefRedLink" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>300pt</Width>
+            <Value>='Ref. Red Link ' &amp; {RefRedLink}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>32.0pt</Left>
+            <Top>562pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtxMontoNoGravado" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>=Iif(UCase({CondicionIVA}) = 'B', '', {MontoNoGravado})</Value>
+            <ZIndex>99</ZIndex>
+            <Left>414pt</Left>
+            <Top>610pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+          </Textbox>
+          <Textbox Name="txtSubtotal" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>=Iif(UCase({CondicionIVA}) = 'B', '', {Subtotal})</Value>
+            <ZIndex>99</ZIndex>
+            <Left>414pt</Left>
+            <Top>655pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+          </Textbox>
+          <Textbox Name="txtMontoGravado" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>=Iif(UCase({CondicionIVA}) = 'B', '', {MontoGravado})</Value>
+            <ZIndex>99</ZIndex>
+            <Left>414.0pt</Left>
+            <Top>632pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+          </Textbox>
+          <Textbox Name="txtMontoIVA" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>=Iif(UCase({CondicionIVA}) = 'B', '', {MontoIVA})</Value>
+            <ZIndex>99</ZIndex>
+            <Left>414pt</Left>
+            <Top>705pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtTotal" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>150pt</Width>
+            <Value>={Importe}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>414pt</Left>
+            <Top>754pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Textbox>
+          <Image Name="imgCodigoBarra">
+            <Height>24pt</Height>
+            <Width>100mm</Width>
+            <Left>32pt</Left>
+            <Top>732pt</Top>
+            <Style>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+            <Source>Database</Source>
+            <Value>=Convert.FromBase64String({?barcode})</Value>
+            <ZIndex>1</ZIndex>
+            <MIMEType>image/jpeg</MIMEType>
+          </Image>
+          <Textbox Name="txtCodigoBarra" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>300pt</Width>
+            <Value>={CodigoBarra}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>32pt</Left>
+            <Top>756pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Left</TextAlign>
+            </Style>
+          </Textbox>
+        </ReportItems>
+      </List>
+      <List Name="lstDetails">
+        <Height>15pt</Height>
+        <Width>210mm</Width>
+        <Left>0pt</Left>
+        <Top>232pt</Top>
+        <ZIndex>2</ZIndex>
+        <DataSetName>Details</DataSetName>
+        <ReportItems>
+          <Textbox Name="txtItemDetalle" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12pt</Height>
+            <Width>143mm</Width>
+            <Value>={Detalle}</Value>
+            <ZIndex>1</ZIndex>
+            <Left>32pt</Left>
+            <Top>0pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <FontSize>9pt</FontSize>
+              <VerticalAlign>Middle</VerticalAlign>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtItemMonto" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12pt</Height>
+            <Width>45.8mm</Width>
+            <Value>={MontoFacturado}</Value>
+            <ZIndex>1</ZIndex>
+            <Left>440pt</Left>
+            <Top>0pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+              <VerticalAlign>Middle</VerticalAlign>
+            </Style>
+          </Textbox>
+        </ReportItems>
+      </List>
+    </ReportItems>
+    <Columns>1</Columns>
+  </Body>
+  <PageFooter>
+    <Height>0.0pt</Height>
+    <PrintOnFirstPage>true</PrintOnFirstPage>
+    <PrintOnLastPage>true</PrintOnLastPage>
+  </PageFooter>
+  <DataElementName>Report</DataElementName>
+  <DataElementStyle>AttributeNormal</DataElementStyle>
+  <DataSets>
+    <DataSet Name="Header">
+      <Query>
+        <DataSourceName>DS1</DataSourceName>
+        <CommandText>SELECT Id, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email FROM Header</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <TypeName>System.Int64</TypeName>
+        </Field>
+        <Field Name="NombreComprobante">
+          <DataField>NombreComprobante</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="TipoComprobante">
+          <DataField>TipoComprobante</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="CondicionIVA">
+          <DataField>CondicionIVA</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="CentroEmisor">
+          <DataField>CentroEmisor</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="NumeroComprobante">
+          <DataField>NumeroComprobante</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="FechaEmision">
+          <DataField>FechaEmision</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Detalle1">
+          <DataField>Detalle1</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Detalle2">
+          <DataField>Detalle2</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Domicilio">
+          <DataField>Domicilio</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Localidad">
+          <DataField>Localidad</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Barrio">
+          <DataField>Barrio</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="CodigoPostal">
+          <DataField>CodigoPostal</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="CUILCUIT">
+          <DataField>CUILCUIT</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="FechaVencimiento">
+          <DataField>FechaVencimiento</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="NumeroCAE">
+          <DataField>NumeroCAE</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="CondicionPago">
+          <DataField>CondicionPago</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Importe">
+          <DataField>Importe</DataField>
+          <TypeName>System.Double</TypeName>
+        </Field>
+        <Field Name="MontoIVA">
+          <DataField>MontoIVA</DataField>
+          <TypeName>System.Double</TypeName>
+        </Field>
+        <Field Name="MontoGravado">
+          <DataField>MontoGravado</DataField>
+          <TypeName>System.Double</TypeName>
+        </Field>
+        <Field Name="MontoNoGravado">
+          <DataField>MontoNoGravado</DataField>
+          <TypeName>System.Double</TypeName>
+        </Field>
+        <Field Name="Subtotal">
+          <DataField>Subtotal</DataField>
+          <TypeName>System.Double</TypeName>
+        </Field>
+        <Field Name="CodigoBarra">
+          <DataField>CodigoBarra</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="RefPagoMisCuentas">
+          <DataField>RefPagoMisCuentas</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="RefRedLink">
+          <DataField>RefRedLink</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="Email">
+          <DataField>Email</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="Details">
+      <Query>
+        <DataSourceName>DS1</DataSourceName>
+        <CommandText>SELECT Detalle, MontoFacturado FROM Detail</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Detalle">
+          <DataField>Detalle</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="MontoFacturado">
+          <DataField>MontoFacturado</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <DataSources>
+    <DataSource Name="DS1">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>
+        </ConnectString>
+        <IntegratedSecurity>false</IntegratedSecurity>
+      </ConnectionProperties>
+    </DataSource>
+  </DataSources>
+  <ReportParameters>
+    <ReportParameter Name="bg_image">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>fc_x</Value>
+        </Values>
+      </DefaultValue>
+      <Nullable>false</Nullable>
+      <AllowBlank>false</AllowBlank>
+      <MultiValue>false</MultiValue>
+      <Prompt>
+      </Prompt>
+    </ReportParameter>
+    <ReportParameter Name="barcode">
+      <DataType>String</DataType>
+      <Nullable>false</Nullable>
+      <AllowBlank>false</AllowBlank>
+      <MultiValue>false</MultiValue>
+      <Prompt>
+      </Prompt>
+    </ReportParameter>
+  </ReportParameters>
+</Report>

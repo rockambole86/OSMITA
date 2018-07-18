@@ -37,8 +37,10 @@
             this.btnSearchOutputFolder = new System.Windows.Forms.Button();
             this.btnProcess = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.barProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.barProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.chkMethodReport = new System.Windows.Forms.RadioButton();
+            this.chkMethodHTML = new System.Windows.Forms.RadioButton();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,13 +132,6 @@
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // barProgress
-            // 
-            this.barProgress.Name = "barProgress";
-            this.barProgress.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.barProgress.Size = new System.Drawing.Size(392, 16);
-            this.barProgress.Step = 1;
-            // 
             // lblStatus
             // 
             this.lblStatus.AutoSize = false;
@@ -144,11 +139,44 @@
             this.lblStatus.Size = new System.Drawing.Size(150, 17);
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // barProgress
+            // 
+            this.barProgress.Name = "barProgress";
+            this.barProgress.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.barProgress.Size = new System.Drawing.Size(392, 16);
+            this.barProgress.Step = 1;
+            // 
+            // chkMethodReport
+            // 
+            this.chkMethodReport.AutoSize = true;
+            this.chkMethodReport.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkMethodReport.Checked = true;
+            this.chkMethodReport.Location = new System.Drawing.Point(401, 69);
+            this.chkMethodReport.Name = "chkMethodReport";
+            this.chkMethodReport.Size = new System.Drawing.Size(94, 17);
+            this.chkMethodReport.TabIndex = 14;
+            this.chkMethodReport.TabStop = true;
+            this.chkMethodReport.Text = "Método nuevo";
+            this.chkMethodReport.UseVisualStyleBackColor = true;
+            // 
+            // chkMethodHTML
+            // 
+            this.chkMethodHTML.AutoSize = true;
+            this.chkMethodHTML.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkMethodHTML.Location = new System.Drawing.Point(409, 92);
+            this.chkMethodHTML.Name = "chkMethodHTML";
+            this.chkMethodHTML.Size = new System.Drawing.Size(86, 17);
+            this.chkMethodHTML.TabIndex = 15;
+            this.chkMethodHTML.Text = "Método viejo";
+            this.chkMethodHTML.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 199);
+            this.Controls.Add(this.chkMethodHTML);
+            this.Controls.Add(this.chkMethodReport);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnProcess);
             this.Controls.Add(this.btnSearchOutputFolder);
@@ -160,6 +188,7 @@
             this.Controls.Add(this.lblInputFile);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FE2PDF";
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -180,6 +209,8 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar barProgress;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.RadioButton chkMethodReport;
+        private System.Windows.Forms.RadioButton chkMethodHTML;
     }
 }
 
