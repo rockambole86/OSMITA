@@ -29,6 +29,7 @@ namespace FE2PDF
         public string RefPagoMisCuentas { get; set; }
         public string RefRedLink        { get; set; }
         public string Email             { get; set; }
+        public string TipoIVA           { get; set; }
 
         public List<Detail> Items { get; set; } = new List<Detail>();
     }

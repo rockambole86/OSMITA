@@ -10,7 +10,6 @@ using System.Threading;
 using System.Windows.Forms;
 using fyiReporting.RdlViewer;
 using fyiReporting.RDL;
-using iTextSharp.text;
 using SelectPdf;
 using HtmlToPdf = SelectPdf.HtmlToPdf;
 
@@ -208,7 +207,8 @@ namespace FE2PDF
                             CodigoBarra = line.Substring(483, 50).Trim(),
                             RefPagoMisCuentas = line.Substring(533, 19).Trim(),
                             RefRedLink = line.Substring(552, 19).Trim(),
-                            Email = line.Substring(571, 50).Trim()
+                            Email = line.Substring(571, 50).Trim(),
+                            TipoIVA = line.Substring(621, 25).Trim()
                         };
                     }
                     else if (line.StartsWith("1"))
@@ -273,8 +273,8 @@ namespace FE2PDF
 
                 foreach (var header in _data)
                 {
-                    query = $@"INSERT INTO Header(ImportedFileId, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email) ";
-                    query += $@"VALUES(@ImportedFileId, @NombreComprobante, @TipoComprobante, @CondicionIVA, @CentroEmisor, @NumeroComprobante, @FechaEmision, @Detalle1, @Detalle2, @Domicilio, @Localidad, @Barrio, @CodigoPostal, @CUILCUIT, @FechaVencimiento, @NumeroCAE, @CondicionPago, @Importe, @MontoIVA, @MontoGravado, @MontoNoGravado, @Subtotal, @CodigoBarra, @RefPagoMisCuentas, @RefRedLink, @Email);";
+                    query = $@"INSERT INTO Header(ImportedFileId, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA) ";
+                    query += $@"VALUES(@ImportedFileId, @NombreComprobante, @TipoComprobante, @CondicionIVA, @CentroEmisor, @NumeroComprobante, @FechaEmision, @Detalle1, @Detalle2, @Domicilio, @Localidad, @Barrio, @CodigoPostal, @CUILCUIT, @FechaVencimiento, @NumeroCAE, @CondicionPago, @Importe, @MontoIVA, @MontoGravado, @MontoNoGravado, @Subtotal, @CodigoBarra, @RefPagoMisCuentas, @RefRedLink, @Email, @TipoIVA);";
 
                     var parameters = new Hashtable
                     {
@@ -303,7 +303,8 @@ namespace FE2PDF
                         { "@CodigoBarra", header.CodigoBarra },
                         { "@RefPagoMisCuentas", header.RefPagoMisCuentas },
                         { "@RefRedLink", header.RefRedLink },
-                        { "@Email", header.Email }
+                        { "@Email", header.Email },
+                        { "@TipoIVA", header.TipoIVA }
                     };
 
                     _db.ExecuteNonQuery(query, parameters);

@@ -94,6 +94,19 @@
               <FontSize>9pt</FontSize>
             </Style>
           </Textbox>
+          <Textbox Name="txtCondicionIVA" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>24pt</Height>
+            <Width>160pt</Width>
+            <Value>={TipoIVA}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>436pt</Left>
+            <Top>127pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Top</VerticalAlign>
+              <FontSize>9pt</FontSize>
+            </Style>
+          </Textbox>
           <Textbox Name="txtDomicilio" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>24.00pt</Height>
             <Width>313.98pt</Width>
@@ -348,7 +361,7 @@
     <DataSet Name="Header">
       <Query>
         <DataSourceName>DS1</DataSourceName>
-        <CommandText>SELECT Id, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email FROM Header</CommandText>
+        <CommandText>SELECT Id, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA FROM Header</CommandText>
       </Query>
       <Fields>
         <Field Name="Id">
@@ -453,6 +466,10 @@
         </Field>
         <Field Name="Email">
           <DataField>Email</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="TipoIVA">
+          <DataField>TipoIVA</DataField>
           <TypeName>System.String</TypeName>
         </Field>
       </Fields>
