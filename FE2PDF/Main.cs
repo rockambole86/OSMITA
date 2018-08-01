@@ -102,20 +102,23 @@ namespace FE2PDF
                 else
                     GeneratePDF();
 
+                var emailDeliveryErrors = false;
+
                 if (chkSendEmail.Checked)
                 {
-                    SendEmails();
+                    emailDeliveryErrors = SendEmails();
                 }
 
                 var newName = _inputFile.Name.Replace(_inputFile.Extension, $@"{DateTime.Now:yyyyMMddHHmmss}{_inputFile.Extension}");
 
                 File.Move(_inputFile.FullName, Path.Combine(txtOutputFolder.Text, newName));
 
-
                 txtInputFile.Text = string.Empty;
                 chkSendEmail.Checked = true;
 
-                MessageBox.Show($@"Proceso finalizado correctamente");
+                MessageBox.Show(!emailDeliveryErrors 
+                    ? $@"Proceso finalizado correctamente" 
+                    : $@"Hubo errores al enviar emails, por favor revise el log");
             }
             catch (Exception ex)
             {
@@ -524,7 +527,7 @@ namespace FE2PDF
             }
         }
 
-        private void SendEmails()
+        private bool SendEmails()
         {
             lblStatus.Text = @"Enviando emails";
 
@@ -542,13 +545,18 @@ namespace FE2PDF
                 From = new MailAddress(ConfigInfo.EmailFromAddress),
                 Subject = ConfigInfo.EmailSubject,
                 IsBodyHtml = true,
-                Body = !string.IsNullOrEmpty(ConfigInfo.EmailHtmlBody) ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody) : string.Empty
+                Body = !string.IsNullOrEmpty(ConfigInfo.EmailHtmlBody) ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody) : string.Empty,
+                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure | DeliveryNotificationOptions.Delay
             };
+
+            mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
 
             var headers = _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList();
 
             barProgress.Style = ProgressBarStyle.Continuous;
             barProgress.Maximum = headers.Count;
+
+            var emailDeliveryLog = new StringBuilder();
 
             foreach (var header in headers)
             {
@@ -571,8 +579,7 @@ namespace FE2PDF
                 }
                 catch(Exception ex)
                 {
-                    // ignored
-                    Console.WriteLine(ex.Message);
+                    emailDeliveryLog.AppendLine($@"Envío de email a la dirección {header.Email} falló. Detalle: {ex}");
                 }
                 finally
                 {
@@ -586,6 +593,20 @@ namespace FE2PDF
 
             mailClient.Dispose();
             mailMessage.Dispose();
+
+            if (emailDeliveryLog.Length > 0)
+            {
+                using (var sw = new StreamWriter(Path.Combine(txtOutputFolder.Text, $@"log_{DateTime.Now:yyyyMMddHHmmss}.txt")))
+                {
+                    sw.WriteLine(emailDeliveryLog.ToString());
+                    sw.Flush();
+                    sw.Close();
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
