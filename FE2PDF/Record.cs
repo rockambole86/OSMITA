@@ -30,6 +30,8 @@ namespace FE2PDF
         public string RefRedLink        { get; set; }
         public string Email             { get; set; }
         public string TipoIVA           { get; set; }
+        public string FechaVencimiento2 { get; set; }
+        public string FechaVencimiento3 { get; set; }
 
         public List<Detail> Items { get; set; } = new List<Detail>();
     }

@@ -84,7 +84,7 @@
           <Textbox Name="txtDetalle" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>24pt</Height>
             <Width>313.98pt</Width>
-            <Value>={Detalle1} &amp; {Detalle2}</Value>
+            <Value>={Detalle1} &amp; ' ' &amp; {Detalle2}</Value>
             <ZIndex>99</ZIndex>
             <Left>73pt</Left>
             <Top>127pt</Top>
@@ -110,7 +110,7 @@
           <Textbox Name="txtDomicilio" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>24.00pt</Height>
             <Width>313.98pt</Width>
-            <Value>={Domicilio} &amp; {Localidad} &amp; {CodigoPostal} &amp; {Barrio}</Value>
+            <Value>={Domicilio} &amp; ' ' &amp; {Localidad} &amp; ' ' &amp; {CodigoPostal} &amp; ' ' &amp; {Barrio}</Value>
             <ZIndex>99</ZIndex>
             <Left>73.00pt</Left>
             <Top>151.00pt</Top>
@@ -186,6 +186,20 @@
               <TextAlign>Left</TextAlign>
             </Style>
           </Textbox>
+          <Textbox Name="txtFechaVencimiento2" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>300pt</Width>
+            <Value>={FechaVencimiento2}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>290pt</Left>
+            <Top>550pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
+            </Style>
+          </Textbox>
           <Textbox Name="txtRefRedLink" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>12.00pt</Height>
             <Width>300pt</Width>
@@ -198,6 +212,20 @@
               <VerticalAlign>Middle</VerticalAlign>
               <FontSize>9pt</FontSize>
               <TextAlign>Left</TextAlign>
+            </Style>
+          </Textbox>
+          <Textbox Name="txtFechaVencimiento3" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
+            <Height>12.00pt</Height>
+            <Width>300pt</Width>
+            <Value>={FechaVencimiento3}</Value>
+            <ZIndex>99</ZIndex>
+            <Left>290pt</Left>
+            <Top>562pt</Top>
+            <Style>
+              <FontFamily>Consolas</FontFamily>
+              <VerticalAlign>Middle</VerticalAlign>
+              <FontSize>9pt</FontSize>
+              <TextAlign>Right</TextAlign>
             </Style>
           </Textbox>
           <Textbox Name="txtxMontoNoGravado" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
@@ -296,7 +324,7 @@
           </Image>
           <Textbox Name="txtCodigoBarra" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>12.00pt</Height>
-            <Width>300pt</Width>
+            <Width>60mm</Width>
             <Value>={CodigoBarra}</Value>
             <ZIndex>99</ZIndex>
             <Left>32pt</Left>
@@ -304,8 +332,11 @@
             <Style>
               <FontFamily>Consolas</FontFamily>
               <VerticalAlign>Middle</VerticalAlign>
-              <FontSize>9pt</FontSize>
-              <TextAlign>Left</TextAlign>
+              <FontSize>8pt</FontSize>
+              <TextAlign>Center</TextAlign>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
             </Style>
           </Textbox>
         </ReportItems>
@@ -361,7 +392,7 @@
     <DataSet Name="Header">
       <Query>
         <DataSourceName>DS1</DataSourceName>
-        <CommandText>SELECT Id, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA FROM Header</CommandText>
+        <CommandText>SELECT Id, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA, FechaVencimiento2, FechaVencimiento3 FROM Header</CommandText>
       </Query>
       <Fields>
         <Field Name="Id">
@@ -470,6 +501,14 @@
         </Field>
         <Field Name="TipoIVA">
           <DataField>TipoIVA</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="FechaVencimiento2">
+          <DataField>FechaVencimiento2</DataField>
+          <TypeName>System.String</TypeName>
+        </Field>
+        <Field Name="FechaVencimiento3">
+          <DataField>FechaVencimiento3</DataField>
           <TypeName>System.String</TypeName>
         </Field>
       </Fields>
