@@ -59,7 +59,7 @@ namespace FE2PDF
         public void CommitTran()
         {
             if (_transaction == null) return;
-            
+
             _transaction.Commit();
 
             _transaction = null;
@@ -68,7 +68,7 @@ namespace FE2PDF
         public void RollbackTran()
         {
             if (_transaction == null) return;
-            
+
             _transaction.Rollback();
 
             _transaction = null;
@@ -98,12 +98,12 @@ namespace FE2PDF
             _command = _connection.CreateCommand();
             _command.CommandText = query;
             _command.CommandType = CommandType.Text;
-            
+
             var dt = new DataTable("table");
             _adapter = new SQLiteDataAdapter(_command);
 
             _adapter.Fill(dt);
-            
+
             _adapter.Dispose();
             _adapter = null;
 
@@ -115,12 +115,12 @@ namespace FE2PDF
             _command = _connection.CreateCommand();
             _command.CommandText = query;
             _command.CommandType = CommandType.Text;
-            
+
             var ds = new DataSet("set");
             _adapter = new SQLiteDataAdapter(_command);
 
             _adapter.Fill(ds);
-            
+
             _adapter.Dispose();
             _adapter = null;
 

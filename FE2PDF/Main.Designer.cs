@@ -41,6 +41,7 @@
             this.barProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.chkMethodReport = new System.Windows.Forms.RadioButton();
             this.chkMethodHTML = new System.Windows.Forms.RadioButton();
+            this.btnGenerateCAE = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -125,7 +126,7 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.barProgress});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 177);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 228);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(545, 22);
             this.statusStrip1.SizingGrip = false;
@@ -170,11 +171,23 @@
             this.chkMethodHTML.Text = "Método viejo";
             this.chkMethodHTML.UseVisualStyleBackColor = true;
             // 
+            // btnGenerateCAE
+            // 
+            this.btnGenerateCAE.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGenerateCAE.Location = new System.Drawing.Point(28, 166);
+            this.btnGenerateCAE.Name = "btnGenerateCAE";
+            this.btnGenerateCAE.Size = new System.Drawing.Size(501, 40);
+            this.btnGenerateCAE.TabIndex = 16;
+            this.btnGenerateCAE.Text = "Generar CAE";
+            this.btnGenerateCAE.UseVisualStyleBackColor = true;
+            this.btnGenerateCAE.Click += new System.EventHandler(this.btnGenerateCAE_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(545, 199);
+            this.ClientSize = new System.Drawing.Size(545, 250);
+            this.Controls.Add(this.btnGenerateCAE);
             this.Controls.Add(this.chkMethodHTML);
             this.Controls.Add(this.chkMethodReport);
             this.Controls.Add(this.statusStrip1);
@@ -211,6 +224,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.RadioButton chkMethodReport;
         private System.Windows.Forms.RadioButton chkMethodHTML;
+        private System.Windows.Forms.Button btnGenerateCAE;
     }
 }
 

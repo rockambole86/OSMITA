@@ -14,8 +14,16 @@
         public static int    SMTPPort     { get; set; }
         public static bool   SMTPUseSSL   { get; set; }
 
-        public static string EmailFromAddress { get; set; }
-        public static string EmailSubject     { get; set; } = "";
-        public static string EmailHtmlBody    { get; set; } = "";
+        public static string EmailFromAddress     { get; set; }
+        public static string EmailSubject         { get; set; } = "";
+        public static string EmailHtmlBody        { get; set; } = "";
+        public static string EmailDeliveryOptions { get; set; } = "";
+
+        public static string WsaaUrl { get; set; } = "";
+        public static string WsfeUrl { get; set; } = "";
+        public static string PfxPath { get; set; } = "";
+        public static string PfxPass { get; set; } = "";
+        public static string PtoVta { get; set; } = "";
+        public static long CUIT { get; set; } = 0;
     }
 }
