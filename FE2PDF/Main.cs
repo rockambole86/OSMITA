@@ -237,6 +237,8 @@ namespace FE2PDF
             ConfigInfo.SMTPUseSSL   = Convert.ToBoolean(ConfigurationManager.AppSettings["mail_smtp_server_ssl"]);
 
             ConfigInfo.EmailFromAddress     = ConfigurationManager.AppSettings["mail_from_address"];
+            ConfigInfo.EmailCCAddress       = ConfigurationManager.AppSettings["mail_cc_address"];
+            ConfigInfo.EmailCCOAddress      = ConfigurationManager.AppSettings["mail_cco_address"];
             ConfigInfo.EmailSubject         = ConfigurationManager.AppSettings["mail_subject"];
             ConfigInfo.EmailHtmlBody        = ConfigurationManager.AppSettings["mail_html_body"];
             ConfigInfo.EmailDeliveryOptions = ConfigurationManager.AppSettings["mail_delivery_options"];
@@ -979,6 +981,16 @@ namespace FE2PDF
                     ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody)
                     : string.Empty
             };
+
+            if (!string.IsNullOrEmpty(ConfigInfo.EmailCCAddress))
+            {
+                mailMessage.CC.Add(ConfigInfo.EmailCCAddress);
+            }
+
+            if (!string.IsNullOrEmpty(ConfigInfo.EmailCCOAddress))
+            {
+                mailMessage.Bcc.Add(ConfigInfo.EmailCCOAddress);
+            }
 
             if (!string.IsNullOrEmpty(ConfigInfo.EmailDeliveryOptions))
             {
