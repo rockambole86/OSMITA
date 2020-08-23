@@ -15,6 +15,8 @@
         public static bool   SMTPUseSSL   { get; set; }
 
         public static string EmailFromAddress { get; set; }
+        public static string EmailCCAddress   { get; set; }
+        public static string EmailCCOAddress  { get; set; }
         public static string EmailSubject     { get; set; } = "";
         public static string EmailHtmlBody    { get; set; } = "";
     }

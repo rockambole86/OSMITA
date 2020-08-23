@@ -116,8 +116,8 @@ namespace FE2PDF
                 txtInputFile.Text = string.Empty;
                 chkSendEmail.Checked = true;
 
-                MessageBox.Show(!emailDeliveryErrors 
-                    ? $@"Proceso finalizado correctamente" 
+                MessageBox.Show(!emailDeliveryErrors
+                    ? $@"Proceso finalizado correctamente"
                     : $@"Hubo errores al enviar emails, por favor revise el log");
             }
             catch (Exception ex)
@@ -156,6 +156,8 @@ namespace FE2PDF
             ConfigInfo.SMTPUseSSL   = Convert.ToBoolean(ConfigurationManager.AppSettings["mail_smtp_server_ssl"]);
 
             ConfigInfo.EmailFromAddress = ConfigurationManager.AppSettings["mail_from_address"];
+            ConfigInfo.EmailCCAddress   = ConfigurationManager.AppSettings["mail_cc_address"];
+            ConfigInfo.EmailCCOAddress  = ConfigurationManager.AppSettings["mail_cco_address"];
             ConfigInfo.EmailSubject     = ConfigurationManager.AppSettings["mail_subject"];
             ConfigInfo.EmailHtmlBody    = ConfigurationManager.AppSettings["mail_html_body"];
         }
@@ -390,7 +392,7 @@ namespace FE2PDF
                     {
                         html = html.Replace("{{show-barcode}}", "display: none !important; visibility: hidden;");
                     }
-                    
+
                     var properties = typeof(Header).GetProperties();
 
                     html = properties.Aggregate(html, (current, property) => current.Replace($"{{{{{property.Name}}}}}", property.GetValue(header, null).ToString()));
@@ -472,7 +474,7 @@ namespace FE2PDF
 
             //Generate PDF file
             var doc = converter.ConvertHtmlString(html);
-            
+
             if (File.Exists(outputFile))
                 File.Delete(outputFile);
 
@@ -504,15 +506,15 @@ namespace FE2PDF
                 viewer.Report.DataSets["Header"].SetData(header);
                 viewer.Report.DataSets["Details"].SetData(details);
 
-                var barcode = !string.IsNullOrEmpty(h.CodigoBarra) 
-                    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64() 
+                var barcode = !string.IsNullOrEmpty(h.CodigoBarra)
+                    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64()
                     : string.Empty;
 
                 viewer.Parameters = string.Empty;
-                viewer.Parameters += $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}"; 
-                
+                viewer.Parameters += $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}";
+
                 if (!string.IsNullOrEmpty(barcode))
-                    viewer.Parameters += $@"&barcode={barcode}"; 
+                    viewer.Parameters += $@"&barcode={barcode}";
 
                 viewer.Rebuild();
 
@@ -536,7 +538,7 @@ namespace FE2PDF
             lblStatus.Text = @"Enviando emails";
 
             var mailAuthentication = new  System.Net.NetworkCredential(ConfigInfo.SMTPUser, ConfigInfo.SMTPPassword);
-            
+
             var mailClient = new SmtpClient(ConfigInfo.SMTPServer, ConfigInfo.SMTPPort)
             {
                 EnableSsl = ConfigInfo.SMTPUseSSL,
@@ -552,6 +554,16 @@ namespace FE2PDF
                 Body = !string.IsNullOrEmpty(ConfigInfo.EmailHtmlBody) ? System.Web.HttpUtility.HtmlDecode(ConfigInfo.EmailHtmlBody) : string.Empty,
                 DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure | DeliveryNotificationOptions.Delay
             };
+
+            if (!string.IsNullOrEmpty(ConfigInfo.EmailCCAddress))
+            {
+                mailMessage.CC.Add(ConfigInfo.EmailCCAddress);
+            }
+
+            if (!string.IsNullOrEmpty(ConfigInfo.EmailCCOAddress))
+            {
+                mailMessage.Bcc.Add(ConfigInfo.EmailCCOAddress);
+            }
 
             mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
 
