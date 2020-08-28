@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Reflection;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -33,6 +34,8 @@ namespace FE2PDF
             ReadConfig();
 
             txtOutputFolder.Text = ConfigInfo.ProcessedPath;
+
+            Text += $" - v{Assembly.GetExecutingAssembly().GetName().Version}";
         }
 
         private void btnSearchInputFile_Click(object sender, EventArgs e)
