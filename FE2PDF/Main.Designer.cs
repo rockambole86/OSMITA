@@ -158,6 +158,7 @@
             this.chkMethodReport.TabStop = true;
             this.chkMethodReport.Text = "Método nuevo";
             this.chkMethodReport.UseVisualStyleBackColor = true;
+            this.chkMethodReport.Visible = false;
             // 
             // chkMethodHTML
             // 
@@ -169,6 +170,7 @@
             this.chkMethodHTML.TabIndex = 15;
             this.chkMethodHTML.Text = "Método viejo";
             this.chkMethodHTML.UseVisualStyleBackColor = true;
+            this.chkMethodHTML.Visible = false;
             // 
             // Main
             // 

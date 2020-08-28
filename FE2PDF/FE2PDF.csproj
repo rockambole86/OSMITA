@@ -37,11 +37,11 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataProviders, Version=4.14.6576.15753, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MajorsilenceReporting-Core.4.14.0\lib\net40\DataProviders.dll</HintPath>
+    <Reference Include="DataProviders, Version=4.15.7357.32200, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MajorsilenceReporting-Core.4.15.0\lib\net40\DataProviders.dll</HintPath>
     </Reference>
-    <Reference Include="EncryptionProvider">
-      <HintPath>..\..\..\My-FyiReporting\RdlViewer\bin\x86\Debug\EncryptionProvider.dll</HintPath>
+    <Reference Include="EncryptionProvider, Version=4.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MajorsilenceReporting-Viewer.4.15.0\lib\net40\EncryptionProvider.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -55,14 +55,14 @@
     <Reference Include="iTextSharp, Version=4.1.6.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
       <HintPath>..\packages\iTextSharp-LGPL.4.1.6\lib\iTextSharp.dll</HintPath>
     </Reference>
-    <Reference Include="RdlCri, Version=4.5.6576.15754, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MajorsilenceReporting-Core.4.14.0\lib\net40\RdlCri.dll</HintPath>
+    <Reference Include="RdlCri, Version=4.15.7357.32201, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MajorsilenceReporting-Core.4.15.0\lib\net40\RdlCri.dll</HintPath>
     </Reference>
-    <Reference Include="RdlEngine, Version=4.14.6576.15753, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MajorsilenceReporting-Core.4.14.0\lib\net40\RdlEngine.dll</HintPath>
+    <Reference Include="RdlEngine, Version=4.15.7357.32200, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MajorsilenceReporting-Core.4.15.0\lib\net40\RdlEngine.dll</HintPath>
     </Reference>
-    <Reference Include="RdlViewer, Version=4.14.6576.15754, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MajorsilenceReporting-Viewer.4.14.0\lib\net40\RdlViewer.dll</HintPath>
+    <Reference Include="RdlViewer, Version=4.15.7357.32201, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MajorsilenceReporting-Viewer.4.15.0\lib\net40\RdlViewer.dll</HintPath>
     </Reference>
     <Reference Include="Select.HtmlToPdf, Version=18.3.0.0, Culture=neutral, PublicKeyToken=e0ae9f6e27a97018, processorArchitecture=MSIL">
       <HintPath>..\packages\Select.HtmlToPdf.18.3.1\lib\net40\Select.HtmlToPdf.dll</HintPath>
