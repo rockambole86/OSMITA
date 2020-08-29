@@ -1006,7 +1006,7 @@ namespace FE2PDF
                     mailMessage.DeliveryNotificationOptions = mailMessage.DeliveryNotificationOptions | option;
                 }
 
-                mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
+                //mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
             }
 
             var headers = _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList();

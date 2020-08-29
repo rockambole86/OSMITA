@@ -188,7 +188,7 @@
           </Textbox>
           <Textbox Name="txtFechaVencimiento2" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>12.00pt</Height>
-            <Width>300pt</Width>
+            <Width>9.54cm</Width>
             <Value>={FechaVencimiento2}</Value>
             <ZIndex>99</ZIndex>
             <Left>290pt</Left>
@@ -216,7 +216,7 @@
           </Textbox>
           <Textbox Name="txtFechaVencimiento3" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2005/01/reportdefinition">
             <Height>12.00pt</Height>
-            <Width>300pt</Width>
+            <Width>9.54cm</Width>
             <Value>={FechaVencimiento3}</Value>
             <ZIndex>99</ZIndex>
             <Left>290pt</Left>
