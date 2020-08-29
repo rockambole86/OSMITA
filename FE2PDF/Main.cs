@@ -568,7 +568,7 @@ namespace FE2PDF
                 mailMessage.Bcc.Add(ConfigInfo.EmailCCOAddress);
             }
 
-            mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
+            //mailMessage.Headers.Add("Disposition-Notification-To", ConfigInfo.EmailFromAddress);
 
             var headers = _data.Where(x => !string.IsNullOrEmpty(x.Email)).ToList();
 
