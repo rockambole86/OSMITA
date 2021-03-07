@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -15,6 +17,8 @@ using FE2PDF.Afip.Wsfe;
 using fyiReporting.RdlViewer;
 using fyiReporting.RDL;
 using SelectPdf;
+using ZXing;
+using ZXing.Common;
 using HtmlToPdf = SelectPdf.HtmlToPdf;
 
 namespace FE2PDF
@@ -307,7 +311,14 @@ namespace FE2PDF
                             /*26*/Email             = line.Substring(571, 50).Trim(),
                             /*27*/TipoIVA           = line.Substring(621, 25).Trim(),
                             /*28*/FechaVencimiento2 = line.Substring(646, 35).Trim(),
-                            /*29*/FechaVencimiento3 = line.Substring(681, 35).Trim()
+                            /*29*/FechaVencimiento3 = line.Substring(681, 35).Trim(),
+                            /*30*/CodigoTipoComprobante   = line.Substring(716, 3).Trim(),
+                            /*31*/Moneda                  = line.Substring(719, 3).Trim(),
+                            /*32*/TipoAutorizacion        = line.Substring(722, 1).Trim(),
+                            /*33*/Cotizacion              = line.Substring(723, 14).Trim(),
+                            /*34*/CUIT                    = line.Substring(737, 11).Trim(),
+                            /*35*/TipoDocumentoReceptor   = line.Substring(748, 2).Trim(),
+                            /*36*/NumeroDocumentoReceptor = line.Substring(750, 11).Trim()
                         };
                     }
                     else if (line != null && line.StartsWith("1"))
@@ -934,16 +945,23 @@ namespace FE2PDF
                 viewer.Report.DataSets["Header"].SetData(header);
                 viewer.Report.DataSets["Details"].SetData(details);
 
-                var barcode = !string.IsNullOrEmpty(h.CodigoBarra)
-                    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64()
+                var qr = h.CondicionIVA.Equals("a", StringComparison.OrdinalIgnoreCase) || h.CondicionIVA.Equals("b", StringComparison.OrdinalIgnoreCase)
+                    ? GenerateQR(h)
                     : string.Empty;
+
+                //var barcode = !string.IsNullOrEmpty(h.CodigoBarra)
+                //    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64()
+                //    : string.Empty;
 
                 viewer.Parameters = string.Empty;
                 viewer.Parameters +=
                     $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}";
 
-                if (!string.IsNullOrEmpty(barcode))
-                    viewer.Parameters += $@"&barcode={barcode}";
+                //if (!string.IsNullOrEmpty(barcode))
+                //    viewer.Parameters += $@"&barcode={barcode}";
+
+                if (!string.IsNullOrEmpty(qr))
+                    viewer.Parameters += $@"&qrcode={qr}";
 
                 viewer.Rebuild();
 
@@ -1067,6 +1085,40 @@ namespace FE2PDF
             }
 
             return false;
+        }
+
+        private string GenerateQR(Header h)
+        {
+            var QCwriter = new BarcodeWriter
+            {
+                Format = BarcodeFormat.QR_CODE,
+                Options = new EncodingOptions()
+                {
+                    Margin = 4
+                }
+            };
+
+            const string data = "{\"ver\":1,\"fecha\":\"2020-10-13\",\"cuit\":30000000007,\"ptoVta\":10,\"tipoCmp\":1,\"nroCmp\":94,\"importe\":12100,\"moneda\":\"DOL\",\"ctz\":65,\"tipoDocRec\":80,\"nroDocRec\":20000000001,\"tipoCodAut\":\"E\",\"codAut\":70417054367476}";
+
+            var encodedData = $"https://www.afip.gob.ar/fe/qr/?p={Convert.ToBase64String(Encoding.UTF8.GetBytes(data))}";
+
+            var result = QCwriter.Write(encodedData);
+            
+            var barcodeBitmap = new Bitmap(result);
+
+            return barcodeBitmap.ToBase64();
+
+            //using (var memory = new MemoryStream())
+            //{
+            //    using (var fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite))
+            //    {
+            //        barcodeBitmap.Save(memory, ImageFormat.Jpeg);
+
+            //        var bytes = memory.ToArray();
+
+            //        fs.Write(bytes, 0, bytes.Length);
+            //    }
+            //}
         }
     }
 }

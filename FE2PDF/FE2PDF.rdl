@@ -307,18 +307,18 @@
               <TextAlign>Right</TextAlign>
             </Style>
           </Textbox>
-          <Image Name="imgCodigoBarra">
-            <Height>24pt</Height>
-            <Width>100mm</Width>
+          <Image Name="imgCodigoQR">
+            <Height>40mm</Height>
+            <Width>40mm</Width>
             <Left>32pt</Left>
-            <Top>732pt</Top>
+            <Top>598pt</Top>
             <Style>
               <BorderStyle />
               <BorderColor />
               <BorderWidth />
             </Style>
             <Source>Database</Source>
-            <Value>=Convert.FromBase64String({?barcode})</Value>
+            <Value>=Convert.FromBase64String({?qrcode})</Value>
             <ZIndex>1</ZIndex>
             <MIMEType>image/jpeg</MIMEType>
           </Image>
@@ -554,7 +554,7 @@
       <Prompt>
       </Prompt>
     </ReportParameter>
-    <ReportParameter Name="barcode">
+    <ReportParameter Name="qrcode">
       <DataType>String</DataType>
       <Nullable>false</Nullable>
       <AllowBlank>false</AllowBlank>

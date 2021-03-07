@@ -32,6 +32,13 @@ namespace FE2PDF
         public string TipoIVA           { get; set; }
         public string FechaVencimiento2 { get; set; }
         public string FechaVencimiento3 { get; set; }
+        public string CodigoTipoComprobante { get; set; }
+        public string Moneda { get; set; }
+        public string TipoAutorizacion { get; set; }
+        public string Cotizacion { get; set; }
+        public string CUIT { get; set; }
+        public string TipoDocumentoReceptor { get; set; }
+        public string NumeroDocumentoReceptor { get; set; }
 
         public List<Detail> Items { get; set; } = new List<Detail>();
     }
