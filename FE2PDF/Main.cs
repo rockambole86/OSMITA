@@ -284,34 +284,34 @@ namespace FE2PDF
 
                         header = new Header
                         {
-                            /*02*/NombreComprobante = line.Substring(1, 30).Trim(),
-                            /*03*/TipoComprobante   = line.Substring(31, 2).Trim(),
-                            /*04*/CondicionIVA      = line.Substring(33, 1).Trim(),
-                            /*05*/CentroEmisor      = line.Substring(34, 4).Trim(),
-                            /*06*/NumeroComprobante = line.Substring(38, 8).Trim(),
-                            /*07*/FechaEmision      = line.Substring(46, 10).Trim(),
-                            /*08*/Detalle1          = line.Substring(56, 75).Trim(),
-                            /*09*/Detalle2          = line.Substring(131, 75).Trim(),
-                            /*10*/Domicilio         = line.Substring(206, 52).Trim(),
-                            /*11*/Localidad         = line.Substring(258, 20).Trim(),
-                            /*12*/Barrio            = line.Substring(278, 30).Trim(),
-                            /*13*/CodigoPostal      = line.Substring(308, 8).Trim(),
-                            /*14*/CUILCUIT          = line.Substring(316, 13).Trim().Replace("/", "-"),
-                            /*15*/FechaVencimiento  = line.Substring(329, 10).Trim(),
-                            /*16*/NumeroCAE         = line.Substring(339, 14).Trim(),
-                            /*17*/CondicionPago     = line.Substring(353, 70).Trim(),
-                            /*18*/Importe           = line.Substring(423, 12).Trim(),
-                            /*19*/MontoIVA          = line.Substring(435, 12).Trim(),
-                            /*20*/MontoGravado      = line.Substring(447, 12).Trim(),
-                            /*21*/MontoNoGravado    = line.Substring(459, 12).Trim(),
-                            /*22*/Subtotal          = line.Substring(471, 12).Trim(),
-                            /*23*/CodigoBarra       = line.Substring(483, 50).Trim(),
-                            /*24*/RefPagoMisCuentas = line.Substring(533, 19).Trim(),
-                            /*25*/RefRedLink        = line.Substring(552, 19).Trim(),
-                            /*26*/Email             = line.Substring(571, 50).Trim(),
-                            /*27*/TipoIVA           = line.Substring(621, 25).Trim(),
-                            /*28*/FechaVencimiento2 = line.Substring(646, 35).Trim(),
-                            /*29*/FechaVencimiento3 = line.Substring(681, 35).Trim(),
+                            /*02*/NombreComprobante       = line.Substring(1, 30).Trim(),
+                            /*03*/TipoComprobante         = line.Substring(31, 2).Trim(),
+                            /*04*/CondicionIVA            = line.Substring(33, 1).Trim(),
+                            /*05*/CentroEmisor            = line.Substring(34, 4).Trim(),
+                            /*06*/NumeroComprobante       = line.Substring(38, 8).Trim(),
+                            /*07*/FechaEmision            = line.Substring(46, 10).Trim(),
+                            /*08*/Detalle1                = line.Substring(56, 75).Trim(),
+                            /*09*/Detalle2                = line.Substring(131, 75).Trim(),
+                            /*10*/Domicilio               = line.Substring(206, 52).Trim(),
+                            /*11*/Localidad               = line.Substring(258, 20).Trim(),
+                            /*12*/Barrio                  = line.Substring(278, 30).Trim(),
+                            /*13*/CodigoPostal            = line.Substring(308, 8).Trim(),
+                            /*14*/CUILCUIT                = line.Substring(316, 13).Trim().Replace("/", "-"),
+                            /*15*/FechaVencimiento        = line.Substring(329, 10).Trim(),
+                            /*16*/NumeroCAE               = line.Substring(339, 14).Trim(),
+                            /*17*/CondicionPago           = line.Substring(353, 70).Trim(),
+                            /*18*/Importe                 = line.Substring(423, 12).Trim(),
+                            /*19*/MontoIVA                = line.Substring(435, 12).Trim(),
+                            /*20*/MontoGravado            = line.Substring(447, 12).Trim(),
+                            /*21*/MontoNoGravado          = line.Substring(459, 12).Trim(),
+                            /*22*/Subtotal                = line.Substring(471, 12).Trim(),
+                            /*23*/CodigoBarra             = line.Substring(483, 50).Trim(),
+                            /*24*/RefPagoMisCuentas       = line.Substring(533, 19).Trim(),
+                            /*25*/RefRedLink              = line.Substring(552, 19).Trim(),
+                            /*26*/Email                   = line.Substring(571, 50).Trim(),
+                            /*27*/TipoIVA                 = line.Substring(621, 25).Trim(),
+                            /*28*/FechaVencimiento2       = line.Substring(646, 35).Trim(),
+                            /*29*/FechaVencimiento3       = line.Substring(681, 35).Trim(),
                             /*30*/CodigoTipoComprobante   = line.Substring(716, 3).Trim(),
                             /*31*/Moneda                  = line.Substring(719, 3).Trim(),
                             /*32*/TipoAutorizacion        = line.Substring(722, 1).Trim(),
@@ -431,9 +431,9 @@ namespace FE2PDF
                 foreach (var header in _data)
                 {
                     query =
-                        @"INSERT INTO Header(ImportedFileId, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA, FechaVencimiento2, FechaVencimiento3) ";
+                        @"INSERT INTO Header(ImportedFileId, NombreComprobante, TipoComprobante, CondicionIVA, CentroEmisor, NumeroComprobante, FechaEmision, Detalle1, Detalle2, Domicilio, Localidad, Barrio, CodigoPostal, CUILCUIT, FechaVencimiento, NumeroCAE, CondicionPago, Importe, MontoIVA, MontoGravado, MontoNoGravado, Subtotal, CodigoBarra, RefPagoMisCuentas, RefRedLink, Email, TipoIVA, FechaVencimiento2, FechaVencimiento3, CodigoTipoComprobante, Moneda, TipoAutorizacion, Cotizacion, CUIT, TipoDocumentoReceptor, NumeroDocumentoReceptor) ";
                     query +=
-                        @"VALUES(@ImportedFileId, @NombreComprobante, @TipoComprobante, @CondicionIVA, @CentroEmisor, @NumeroComprobante, @FechaEmision, @Detalle1, @Detalle2, @Domicilio, @Localidad, @Barrio, @CodigoPostal, @CUILCUIT, @FechaVencimiento, @NumeroCAE, @CondicionPago, @Importe, @MontoIVA, @MontoGravado, @MontoNoGravado, @Subtotal, @CodigoBarra, @RefPagoMisCuentas, @RefRedLink, @Email, @TipoIVA, @FechaVencimiento2, @FechaVencimiento3);";
+                        @"VALUES(@ImportedFileId, @NombreComprobante, @TipoComprobante, @CondicionIVA, @CentroEmisor, @NumeroComprobante, @FechaEmision, @Detalle1, @Detalle2, @Domicilio, @Localidad, @Barrio, @CodigoPostal, @CUILCUIT, @FechaVencimiento, @NumeroCAE, @CondicionPago, @Importe, @MontoIVA, @MontoGravado, @MontoNoGravado, @Subtotal, @CodigoBarra, @RefPagoMisCuentas, @RefRedLink, @Email, @TipoIVA, @FechaVencimiento2, @FechaVencimiento3, @CodigoTipoComprobante, @Moneda, @TipoAutorizacion, @Cotizacion, @CUIT, @TipoDocumentoReceptor, @NumeroDocumentoReceptor);";
 
                     var parameters = new Hashtable
                     {
@@ -465,7 +465,14 @@ namespace FE2PDF
                         {"@Email", header.Email},
                         {"@TipoIVA", header.TipoIVA},
                         {"@FechaVencimiento2", header.FechaVencimiento2},
-                        {"@FechaVencimiento3", header.FechaVencimiento3}
+                        {"@FechaVencimiento3", header.FechaVencimiento3},
+                        {"@CodigoTipoComprobante", header.CodigoTipoComprobante},
+                        {"@Moneda", header.Moneda},
+                        {"@TipoAutorizacion", header.TipoAutorizacion},
+                        {"@Cotizacion", header.Cotizacion},
+                        {"@CUIT", header.CUIT},
+                        {"@TipoDocumentoReceptor", header.TipoDocumentoReceptor},
+                        {"@NumeroDocumentoReceptor", header.NumeroDocumentoReceptor}
                     };
 
                     _db.ExecuteNonQuery(query, parameters);
@@ -1098,7 +1105,11 @@ namespace FE2PDF
                 }
             };
 
-            const string data = "{\"ver\":1,\"fecha\":\"2020-10-13\",\"cuit\":30000000007,\"ptoVta\":10,\"tipoCmp\":1,\"nroCmp\":94,\"importe\":12100,\"moneda\":\"DOL\",\"ctz\":65,\"tipoDocRec\":80,\"nroDocRec\":20000000001,\"tipoCodAut\":\"E\",\"codAut\":70417054367476}";
+            var fechaEmision = DateTime
+                .ParseExact(h.FechaEmision, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture)
+                .ToString("yyyy-MM-dd");
+
+            var data = $"{{\"ver\":1,\"fecha\":\"{fechaEmision}\",\"cuit\":{h.CUIT.Replace("-", "")},\"ptoVta\":{ConfigInfo.PtoVta},\"tipoCmp\":{Convert.ToInt32(h.CodigoTipoComprobante)},\"nroCmp\":{h.NumeroComprobante},\"importe\":{h.Importe},\"moneda\":\"{h.Moneda}\",\"ctz\":{h.Cotizacion},\"tipoDocRec\":{h.TipoDocumentoReceptor},\"nroDocRec\":{h.NumeroDocumentoReceptor},\"tipoCodAut\":\"{h.TipoAutorizacion}\",\"codAut\":{h.NumeroCAE}}}";
 
             var encodedData = $"https://www.afip.gob.ar/fe/qr/?p={Convert.ToBase64String(Encoding.UTF8.GetBytes(data))}";
 
