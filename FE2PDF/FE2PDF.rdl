@@ -307,6 +307,21 @@
               <TextAlign>Right</TextAlign>
             </Style>
           </Textbox>
+          <Image Name="imgCodigoBarra">
+            <Height>24pt</Height>
+            <Width>100mm</Width>
+            <Left>32pt</Left>
+            <Top>732pt</Top>
+            <Style>
+              <BorderStyle />
+              <BorderColor />
+              <BorderWidth />
+            </Style>
+            <Source>Database</Source>
+            <Value>=Convert.FromBase64String({?barcode})</Value>
+            <ZIndex>1</ZIndex>
+            <MIMEType>image/jpeg</MIMEType>
+          </Image>
           <Image Name="imgCodigoQR">
             <Height>40mm</Height>
             <Width>40mm</Width>
@@ -548,6 +563,14 @@
           <Value>fc_x</Value>
         </Values>
       </DefaultValue>
+      <Nullable>false</Nullable>
+      <AllowBlank>false</AllowBlank>
+      <MultiValue>false</MultiValue>
+      <Prompt>
+      </Prompt>
+    </ReportParameter>
+    <ReportParameter Name="barcode">
+      <DataType>String</DataType>
       <Nullable>false</Nullable>
       <AllowBlank>false</AllowBlank>
       <MultiValue>false</MultiValue>

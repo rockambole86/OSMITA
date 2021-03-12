@@ -27,5 +27,14 @@
         public static string PfxPass { get; set; } = "";
         public static string PtoVta { get; set; } = "";
         public static long CUIT { get; set; } = 0;
+
+        public static InvoiceCodeType InvoiceCodeType { get; set; } = InvoiceCodeType.None;
+    }
+
+    public enum InvoiceCodeType
+    {
+        None,
+        Barcode,
+        QR
     }
 }

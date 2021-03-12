@@ -256,6 +256,8 @@ namespace FE2PDF
             ConfigInfo.PfxPass = ConfigurationManager.AppSettings["PfxPass"];
             ConfigInfo.PtoVta = ConfigurationManager.AppSettings["PtoVta"];
             ConfigInfo.CUIT = ConfigurationManager.AppSettings["CUIT"].ToLong();
+
+            ConfigInfo.InvoiceCodeType = (InvoiceCodeType) Enum.Parse(typeof(InvoiceCodeType), ConfigurationManager.AppSettings["invoice_code_type"], true);
         }
 
         private bool LoadTXT()
@@ -952,23 +954,30 @@ namespace FE2PDF
                 viewer.Report.DataSets["Header"].SetData(header);
                 viewer.Report.DataSets["Details"].SetData(details);
 
-                var qr = h.CondicionIVA.Equals("a", StringComparison.OrdinalIgnoreCase) || h.CondicionIVA.Equals("b", StringComparison.OrdinalIgnoreCase)
-                    ? GenerateQR(h)
-                    : string.Empty;
-
-                //var barcode = !string.IsNullOrEmpty(h.CodigoBarra)
-                //    ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64()
-                //    : string.Empty;
-
                 viewer.Parameters = string.Empty;
-                viewer.Parameters +=
-                    $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}";
+                viewer.Parameters += $@"&bg_image={Path.Combine(Application.StartupPath, $"fc_{h.CondicionIVA.ToLower()}.jpg")}";
 
-                //if (!string.IsNullOrEmpty(barcode))
-                //    viewer.Parameters += $@"&barcode={barcode}";
+                if (ConfigInfo.InvoiceCodeType != InvoiceCodeType.None)
+                {
+                    if (ConfigInfo.InvoiceCodeType == InvoiceCodeType.QR)
+                    {
+                        var qr = h.CondicionIVA.Equals("a", StringComparison.OrdinalIgnoreCase) || h.CondicionIVA.Equals("b", StringComparison.OrdinalIgnoreCase)
+                            ? GenerateQR(h)
+                            : string.Empty;
 
-                if (!string.IsNullOrEmpty(qr))
-                    viewer.Parameters += $@"&qrcode={qr}";
+                        if (!string.IsNullOrEmpty(qr))
+                            viewer.Parameters += $@"&qrcode={qr}";
+                    }
+                    else
+                    {
+                        var barcode = !string.IsNullOrEmpty(h.CodigoBarra)
+                            ? Int2of5.GenerateBarCode(h.CodigoBarra, 1000, 100, 2).ToBase64()
+                            : string.Empty;
+
+                        if (!string.IsNullOrEmpty(barcode))
+                            viewer.Parameters += $@"&barcode={barcode}";
+                    }
+                }
 
                 viewer.Rebuild();
 
